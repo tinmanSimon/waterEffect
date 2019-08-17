@@ -1,6 +1,7 @@
 ﻿  Water.cpp
 C:\Users\wudis\Documents\graphics\projects\water\water\water\Water.cpp(9): warning C4018: '<': signed/unsigned mismatch
 C:\Users\wudis\Documents\graphics\projects\water\water\water\Water.cpp(10): warning C4018: '<': signed/unsigned mismatch
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Water.cpp(41): warning C4002: too many arguments for function-like macro invocation 'assert'
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Water.cpp(52): warning C4018: '<': signed/unsigned mismatch
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Water.cpp(37): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Water.cpp(44): warning C4002: too many arguments for function-like macro invocation 'assert'
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Water.cpp(55): warning C4018: '<': signed/unsigned mismatch
   water.vcxproj -> C:\Users\wudis\Documents\graphics\projects\water\water\Debug\water.exe

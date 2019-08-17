@@ -32,6 +32,9 @@ void Water::waterLogic() {
 	model = translate(mat4(1.0f), vec3(0, -1.0f, 0));
 	view = cam->view;
 	proj = cam->projection;
+
+	//Todo change t to real time simulation
+	t = glfwGetTime();
 }
 
 Water::Water(int width, int length, float s) : 
@@ -62,6 +65,7 @@ void Water::useShader() {
 	shader->setmat4(model, "model");
 	shader->setmat4(view, "view");
 	shader->setmat4(proj, "projection");
+	shader->setFloat(t, "t");
 }
 
 Water::~Water()
