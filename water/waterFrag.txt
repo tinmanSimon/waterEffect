@@ -1,7 +1,11 @@
 #version 330 core
+in GEO_OUT
+{
+  vec3 wNormal;
+} geo_out;
 out vec4 FragColor;
-
 void main()
 {
-	FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+	vec3 worldNormal = geo_out.wNormal;
+	FragColor = vec4(abs(worldNormal.x),abs(worldNormal.y),abs(worldNormal.z), 1.0);
 }  

@@ -17,11 +17,13 @@ class Shader
 {
 	unsigned int vertexShader;
 	unsigned int fragShader;
+	unsigned int geoShader;
 	unsigned int shaderProgram;
 
 	//file names for vertex and frag shaders
 	const char* vertexName;
 	const char* fragName;
+	const char* geoName;
 
 	void shaderInit();
 public:
@@ -29,8 +31,8 @@ public:
 	//vertex is the filename of vertex shader
 	//frag is the filename of frag shader
 	Shader() {}
-	Shader(const char* vertex, const char* frag);
-	Shader(std::string vertex, std::string frag);
+	Shader(const char* vertex, const char* frag, const char* geo = nullptr);
+	Shader(std::string vertex, std::string frag, std::string geo = "");
 	~Shader();
 
 	void use();

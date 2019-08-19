@@ -45,7 +45,7 @@ Water::Water(int width, int length, float s) :
 
 	//construct vao and shader
 	vao = new VAO(false);
-	shader = new Shader(vertex, frag);
+	shader = new Shader(vertex, frag, geo);
 
 	//construct vertices. 
 	vertices.resize(l);
@@ -78,8 +78,6 @@ void Water::draw() {
 	waterLogic();
 	vao->use();
 	useShader();
-	//glDrawArrays(GL_TRIANGLES, 0, 3);
-	//cout << "everything is fine!\n";
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	glDrawArrays(GL_TRIANGLES, 0, triangles.size());
 }

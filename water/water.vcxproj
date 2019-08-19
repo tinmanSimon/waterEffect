@@ -154,6 +154,8 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="waterFrag.txt" />
+    <Text Include="waterGeo.txt" />
+    <Text Include="waterTestingGeo.txt" />
     <Text Include="waterVertex.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

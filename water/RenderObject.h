@@ -1,6 +1,7 @@
 #ifndef RENDEROBJECT_H
 #define RENDEROBJECT_H
 #include <iostream>
+// Interface for all rendering objects.
 class RenderObject
 {
 public:

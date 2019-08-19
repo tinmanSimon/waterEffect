@@ -91,5 +91,11 @@
     <Text Include="waterVertex.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="waterGeo.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="waterTestingGeo.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

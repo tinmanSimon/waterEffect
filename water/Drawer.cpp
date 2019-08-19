@@ -27,14 +27,6 @@ Drawer::~Drawer()
 {
 }
 
-float mydvertices[] = {
-	-0.5f, -0.5f, 0.0f,
-	 0.5f, -0.5f, 0.0f,
-	 0.0f,  0.5f, 0.0f
-};
-VAO vao;
-Shader shader;
-
 void Drawer::drawerinit() {
 	//init simone func
 	initRand();
@@ -43,7 +35,7 @@ void Drawer::drawerinit() {
 	cam = new Camera();
 
 	//init water
-	renderObjects.push_back(new Water(300, 300, 0.5f));
+	renderObjects.push_back(new Water(300, 300, 0.03f));
 }
 
 void logic() {
@@ -51,8 +43,6 @@ void logic() {
 
 	//update camera
 	cam->update();
-
-
 }
 
 void Drawer::draw() {

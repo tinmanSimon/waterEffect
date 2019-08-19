@@ -29,10 +29,13 @@ void Shader::shaderInit() {
 	//compile fragment shader
 	compile(fragName, fragShader, GL_FRAGMENT_SHADER);
 
+	if(geoName != nullptr) compile(geoName, geoShader, GL_GEOMETRY_SHADER);
+
 	//link shaders
 	shaderProgram = glCreateProgram();
 	glAttachShader(shaderProgram, vertexShader);
 	glAttachShader(shaderProgram, fragShader);
+	if (geoName != nullptr) glAttachShader(shaderProgram, geoShader);
 	glLinkProgram(shaderProgram);
 	int success = 0;
 	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
@@ -45,23 +48,25 @@ void Shader::shaderInit() {
 	//unlink shaders
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragShader);
+	if (geoName != nullptr) glDeleteShader(geoShader);
 }
 
-Shader::Shader(const char* vertex, const char* frag) {
+Shader::Shader(const char* vertex, const char* frag, const char* geo) {
 	vertexName = vertex;
 	fragName = frag;
+	geoName = geo;
 	shaderInit();
-
 }
 
-Shader::Shader(string vertex, string frag)
+Shader::Shader(string vertex, string frag, string geo)
 {
-	if (vertex.length() == 0 || frag.length() == 0) {
+	if (vertex.length() == 0 || frag.length() == 0 || geo.length() == 0) {
 		cout << "ERROR: invalid shader file names!\n" << endl;
 	}
 	else {
 		vertexName = vertex.c_str();
 		fragName = frag.c_str();
+		geoName = geo.c_str();
 		shaderInit();
 	}
 

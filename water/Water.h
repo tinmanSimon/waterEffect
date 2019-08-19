@@ -12,8 +12,10 @@ private:
 	std::vector< glm::vec3> triangles;
 	VAO* vao;
 	Shader* shader;
+	Shader* testShader;
 	const char* vertex = "waterVertex.txt";
 	const char* frag = "waterFrag.txt";
+	const char* geo = "waterGeo.txt";
 
 	glm::mat4 model, view, proj;
 
