@@ -66,6 +66,15 @@ void Water::useShader() {
 	shader->setmat4(view, "view");
 	shader->setmat4(proj, "projection");
 	shader->setFloat(t, "t");
+
+	//configue for frag shader
+	shader->setVec3(0.0f, 0.467f, 0.745f, "albedo");
+	shader->setFloat(0, "metallic");
+	shader->setFloat(0, "roughness");
+	shader->setFloat(0.5, "ao");
+	shader->setVec3(0.5, 0.5, 0.5, "lightPosition");
+	shader->setVec3(1.0f, 1.0f, 1.0f, "lightColor");
+	shader->setVec3(cam->cameraPos.x, cam->cameraPos.y, cam->cameraPos.z, "camPos");
 }
 
 Water::~Water()

@@ -97,5 +97,8 @@
     <Text Include="waterTestingGeo.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="waterFrag2.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

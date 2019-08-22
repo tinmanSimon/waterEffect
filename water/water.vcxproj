@@ -154,6 +154,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="waterFrag.txt" />
+    <Text Include="waterFrag2.txt" />
     <Text Include="waterGeo.txt" />
     <Text Include="waterTestingGeo.txt" />
     <Text Include="waterVertex.txt" />

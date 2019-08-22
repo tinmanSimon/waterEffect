@@ -30,6 +30,7 @@ int Window::init() {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_SAMPLES, 4);
 
 	window = glfwCreateWindow(width, height, name, NULL, NULL);
 
@@ -57,7 +58,8 @@ int Window::init() {
 	glEnable(GL_DEPTH_TEST); //z buffer
 	glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); //remove cursor
 
-
+	//MSAA
+	glEnable(GL_MULTISAMPLE);
 
 
 	glViewport(0, 0, width, height);

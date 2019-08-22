@@ -8,7 +8,7 @@
 
 
 
-static glm::vec3 clearColor = glm::vec3(0.05f, 0.05f, 0.05f);
+static glm::vec3 clearColor = glm::vec3(0.529f, 0.808f, 0.922f);
 
 class Window
 {
