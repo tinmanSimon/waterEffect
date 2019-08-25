@@ -1,20 +1,7 @@
-﻿  Camera.cpp
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Camera.cpp(65): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Camera.cpp(79): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Camera.cpp(80): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Camera.cpp(89): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Camera.cpp(90): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Camera.cpp(91): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Camera.cpp(92): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Camera.cpp(115): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-  Window.cpp
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Window.cpp(35): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Window.cpp(65): warning C4244: 'argument': conversion from 'float' to 'GLsizei', possible loss of data
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Window.cpp(79): warning C4305: '+=': truncation from 'double' to 'float'
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Window.cpp(82): warning C4305: '-=': truncation from 'double' to 'float'
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Window.cpp(85): warning C4305: '-=': truncation from 'double' to 'float'
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Window.cpp(88): warning C4305: '+=': truncation from 'double' to 'float'
-  Generating Code...
-  LINK : C:\Users\wudis\Documents\graphics\projects\water\water\Debug\water.exe not found or not built by the last incremental link; performing full link
-LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+﻿  Water.cpp
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Water.cpp(11): warning C4018: '<': signed/unsigned mismatch
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Water.cpp(12): warning C4018: '<': signed/unsigned mismatch
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Water.cpp(39): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Water.cpp(46): warning C4002: too many arguments for function-like macro invocation 'assert'
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Water.cpp(57): warning C4018: '<': signed/unsigned mismatch
   water.vcxproj -> C:\Users\wudis\Documents\graphics\projects\water\water\Debug\water.exe

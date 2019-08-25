@@ -7,11 +7,38 @@ uniform float t;
 out GEO_IN {
 	vec3 WorldP;
 } geo_in;
+
+uniform int waveSize;
+
+uniform struct WAVES {
+  vec2 Ds[100];
+  float Qs[100];
+  float wavelengths[100];
+  float As[100]; //amplitudes
+  float frequencies[100];
+  float phase_constants[100];
+  float speeds[100];
+  float ws[100];
+} waves;
+
+vec3 calPos(){
+	float height = 0.0f;
+	vec3 result = aPos;
+	result.y = 0;
+	for(int i = 0; i < waveSize; ++i){
+		result.x += waves.Qs[i] * waves.As[i] * waves.Ds[i].x * cos(waves.ws[i] * dot(waves.Ds[i], vec2(aPos.x, aPos.z)) + waves.phase_constants[i] * t);
+		result.z += waves.Qs[i] * waves.As[i] * waves.Ds[i].y * cos(waves.ws[i] * dot(waves.Ds[i], vec2(aPos.x, aPos.z)) + waves.phase_constants[i] * t);
+		result.y += waves.As[i] * sin(waves.ws[i] * dot(waves.Ds[i], vec2(aPos.x, aPos.z)) + waves.phase_constants[i] * t);
+	}
+	return result;
+}
+
 void main()
 {
-	float maxHeight = 0.02f;
-	float height = (sin(aPos.x + t) + cos(aPos.z + t + 0.3) - sin(cos(aPos.z + aPos.x + t)) - sin(aPos.x+t)*sin(aPos.z+t) + sin(aPos.x+t)*sin(aPos.x+t)*sin(aPos.x+t)) / 36.0f;
-	vec4 w = model * vec4(aPos.x, height, aPos.z, 1.0f);
+	//float maxHeight = 0.02f;
+	//float height = (sin(aPos.x + t) + cos(aPos.z + t + 0.3) - sin(cos(aPos.z + aPos.x + t)) - sin(aPos.x+t)*sin(aPos.z+t) + sin(aPos.x+t)*sin(aPos.x+t)*sin(aPos.x+t)) / 24.0f;
+	//float height = waves.Ds[0].x;
+	vec4 w = model * vec4(calPos(), 1.0f);
 	geo_in.WorldP = vec3(w);
     gl_Position =  projection * view * w;
 }  

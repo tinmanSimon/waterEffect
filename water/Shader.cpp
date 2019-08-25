@@ -102,3 +102,17 @@ void Shader::setVec3(float valx, float valy, float valz, const char* attrName) {
 	int loc = glGetUniformLocation(shaderProgram, attrName);
 	glUniform3f(loc, valx, valy, valz);
 }
+
+void Shader::setVec3(vec3 v, const char* attrName) {
+	setVec3(v.x, v.y, v.z, attrName);
+}
+
+void Shader::setVec2(float valx, float valy, const char* attrName) {
+	use();
+	int loc = glGetUniformLocation(shaderProgram, attrName);
+	glUniform2f(loc, valx, valy);
+}
+
+void Shader::setVec2(vec2 v, const char* attrName) {
+	setVec2(v.x, v.y, attrName);
+}

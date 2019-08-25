@@ -9,6 +9,7 @@ void initRand() { //only call this once
 //produces a float number that a <= result < b.
 //requirements: a<b
 float randFloat(float a, float b) {
+	assert(a < b);
 	float randf = ((float)rand()) / (float)RAND_MAX;
 	while (randf == 1) {
 		randf = ((float)rand()) / (float)RAND_MAX;

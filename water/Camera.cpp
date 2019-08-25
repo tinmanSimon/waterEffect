@@ -34,7 +34,7 @@ Camera::Camera()
 	n = 0.1f;
 	f = 100.0f;
 
-	camProtoSpeed = 8.0f;
+	camProtoSpeed = 10.0f;
 }
 
 

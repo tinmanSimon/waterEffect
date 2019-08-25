@@ -17,8 +17,8 @@ using namespace std;
 using namespace glm;
 
 int main() {
-	float width = 1900;
-	float height = 1200;
+	float width = 3000;
+	float height = 1500;
 	char w_name[100] = "waterEffect";
 	
 	window = new Window(w_name, width, height);

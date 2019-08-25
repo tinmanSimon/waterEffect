@@ -40,6 +40,9 @@ public:
 	void setInt(int i, const char*);
 	void setFloat(float f, const char*);
 	void setVec3(float valx, float valy, float valz, const char* attrName);
+	void setVec3(glm::vec3 v, const char* attrName);
+	void setVec2(float valx, float valy, const char* attrName);
+	void setVec2(glm::vec2 v, const char* attrName);
 };
 
 extern std::vector<Shader*> shaders;

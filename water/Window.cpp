@@ -87,6 +87,9 @@ void processInput(GLFWwindow* window)
 	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
 		if (spheres[0]->metallic < 0.99f) spheres[0]->metallic += 0.01;
 	}
+	if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS) {
+		Water::geometry = !Water::geometry;
+	}
 
 	if (cam != NULL) {
 		float cameraSpeed = cam->camProtoSpeed * cam->deltaTime;

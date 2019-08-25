@@ -24,13 +24,14 @@ private:
 	void addTrianglesToBuffer();
 	void createShader(const char* vertex, const char* frag);
 	void useShader();
-
+	void initShader();
 	void waterLogic();
 public:
 	Water() {}
 	Water(int w, int l, float s = 0.5f);
 	~Water();
 	void draw();
+	static bool geometry;
 };
 
 #endif
