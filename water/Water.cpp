@@ -3,7 +3,7 @@
 using namespace std;
 using namespace glm;
 
-bool Water::geometry = false;
+bool Water::geometry = true;
 
 void Water::addTriangles() {
 	triangles.resize((l - 1) * (w - 1) * 6);
@@ -71,7 +71,7 @@ void Water::useShader() {
 	shader->setFloat(t, "t");
 
 	//config for frag shader
-	shader->setVec3(0.0f, 0.467f, 0.745f, "albedo");
+	shader->setVec3(0.133, 0.502, 0.698, "albedo");
 	shader->setFloat(0, "metallic");
 	shader->setFloat(0, "roughness");
 	shader->setFloat(0.5, "ao");
@@ -81,20 +81,21 @@ void Water::useShader() {
 }
 
 void Water::initShader() {
-	shader = new Shader(vertex, frag, geo);
+	//shader = new Shader(vertex, frag, geo);
+	shader = new Shader(vertex, frag);
 
 	//init vertex shader
 	string tmp;
-	int waveSize = 10;
+	int waveSize = 30;
 	shader->setInt(waveSize, "waveSize");
 	forUp(i, waveSize) {
 		vec2 direction = vec2(randFloat(-1.0f, 1.0f), randFloat(-1.0f, 1.0f));
-		float A = randFloat(0, 0.2f); //waves amplitude
-		float speed = randFloat(6.0f, 9.0f); //waves speed
+		float A = randFloat(0, 1/(float)waveSize); //waves amplitude
+		float speed = randFloat(0.0f, 0.8f); //waves speed
 		float wavelength = randFloat(1.0f, 3.0f); 
-		float w = speed / wavelength;
-		float Q = randFloat(0, 1/(w*A));
-		float phase_constant = randFloat(0, wavelength / 2.0f);
+		float w = 2 * PI_SIMON / wavelength;
+		float Q = randFloat(0, 1);
+		float phase_constant = speed * 2 * PI_SIMON / wavelength;
 		tmp = "waves.Ds[" + to_string(i) + "]";
 		shader->setVec2(direction, tmp.c_str());
 		tmp = "waves.As[" + to_string(i) + "]";

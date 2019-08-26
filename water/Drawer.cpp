@@ -35,7 +35,7 @@ void Drawer::drawerinit() {
 	cam = new Camera();
 
 	//init water
-	renderObjects.push_back(new Water(600, 600, 0.06f));
+	renderObjects.push_back(new Water(300, 300, 0.03f));
 }
 
 void logic() {

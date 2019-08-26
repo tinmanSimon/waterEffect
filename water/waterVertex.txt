@@ -21,8 +21,9 @@ uniform struct WAVES {
   float ws[100];
 } waves;
 
+out vec3 worldNormal;
+
 vec3 calPos(){
-	float height = 0.0f;
 	vec3 result = aPos;
 	result.y = 0;
 	for(int i = 0; i < waveSize; ++i){
@@ -33,11 +34,19 @@ vec3 calPos(){
 	return result;
 }
 
+vec3 calNormal(){
+	vec3 result = vec3(0,0,1);
+	for(int i = 0; i < waveSize; ++i){
+		result.x -= waves.Ds[i].x * waves.ws[i] * waves.As[i] * cos(waves.ws[i] * dot(waves.Ds[i], vec2(aPos.x, aPos.z)) + waves.phase_constants[i] * t);
+		result.z -= waves.Ds[i].y * waves.ws[i] * waves.As[i] * cos(waves.ws[i] * dot(waves.Ds[i], vec2(aPos.x, aPos.z)) + waves.phase_constants[i] * t);
+		result.y -= waves.Qs[i] * waves.ws[i] * waves.As[i] * sin(waves.ws[i] * dot(waves.Ds[i], vec2(aPos.x, aPos.z)) + waves.phase_constants[i] * t);
+	}
+	return result;
+}
+
 void main()
 {
-	//float maxHeight = 0.02f;
-	//float height = (sin(aPos.x + t) + cos(aPos.z + t + 0.3) - sin(cos(aPos.z + aPos.x + t)) - sin(aPos.x+t)*sin(aPos.z+t) + sin(aPos.x+t)*sin(aPos.x+t)*sin(aPos.x+t)) / 24.0f;
-	//float height = waves.Ds[0].x;
+	worldNormal = calNormal();
 	vec4 w = model * vec4(calPos(), 1.0f);
 	geo_in.WorldP = vec3(w);
     gl_Position =  projection * view * w;

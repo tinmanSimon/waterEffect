@@ -5,6 +5,8 @@ in GEO_OUT {
   vec3 WorldP;
 } geo_out;
 
+in vec3 worldNormal;
+
 // material parameters
 uniform vec3 albedo;
 uniform float metallic;
@@ -64,7 +66,7 @@ vec3 fresnelSchlick(float cosTheta, vec3 F0)
 void main()
 {		
 	WorldPos = geo_out.WorldP;
-	Normal = geo_out.wNormal;
+	Normal = worldNormal; //geo_out.wNormal;
     vec3 N = normalize(Normal);
     vec3 V = normalize(camPos - WorldPos);
 
