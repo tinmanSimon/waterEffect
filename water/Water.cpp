@@ -6,24 +6,31 @@ using namespace glm;
 bool Water::geometry = true;
 
 void Water::addTriangles() {
-	triangles.resize((l - 1) * (w - 1) * 6);
+	triangles.resize((l - 1) * (w - 1) * 6 * 2);
 	int triangleCount = 0;
 	forUp(i, vertices.size() - 1) {
 		forUp(j, vertices[i].size() - 1) {
 			triangles[triangleCount++] = vertices[i][j];
+			triangles[triangleCount++] = vec3(0.0f, 0.0f, 0.0f);
 			triangles[triangleCount++] = vertices[i][j+1];
+			triangles[triangleCount++] = vec3(1.0f, 0.0f, 0.0f);
 			triangles[triangleCount++] = vertices[i+1][j+1];
+			triangles[triangleCount++] = vec3(1.0f, 1.0f, 0.0f);
 
 			triangles[triangleCount++] = vertices[i][j];
+			triangles[triangleCount++] = vec3(0.0f, 0.0f, 0.0f);
 			triangles[triangleCount++] = vertices[i + 1][j + 1];
+			triangles[triangleCount++] = vec3(1.0f, 1.0f, 0.0f);
 			triangles[triangleCount++] = vertices[i + 1][j];
+			triangles[triangleCount++] = vec3(0.0f, 1.0f, 0.0f);
 		}
 	}
 }
 
 void Water::addTrianglesToBuffer() {
 	vao->bufferData(&triangles[0], triangles.size()*sizeof(vec3));
-	vao->addAttribute(0, 3, 3*sizeof(float), 0);
+	vao->addAttribute(0, 3, 6*sizeof(float), 0);
+	vao->addAttribute(1, 2, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 }
 
 void Water::createShader(const char* vertex, const char* frag) {
@@ -37,6 +44,16 @@ void Water::waterLogic() {
 
 	//Todo change t to real time simulation
 	t = glfwGetTime();
+}
+
+void Water::useTextures() {
+	shader->setInt(0, "normalMap");
+	normalText->use(GL_TEXTURE0);
+}
+
+void Water::initTextures() {
+	normalText = new Texture("water_normal.jpg");
+	//normalText = new Texture("water.jpg");
 }
 
 Water::Water(int width, int length, float s) : 
@@ -60,6 +77,7 @@ Water::Water(int width, int length, float s) :
 	}
 	addTriangles();
 	addTrianglesToBuffer();
+	initTextures();
 }
 
 void Water::useShader() {
@@ -71,7 +89,7 @@ void Water::useShader() {
 	shader->setFloat(t, "t");
 
 	//config for frag shader
-	shader->setVec3(0.133, 0.502, 0.698, "albedo");
+	shader->setVec3(0, 0.412, 0.58, "albedo");
 	shader->setFloat(0, "metallic");
 	shader->setFloat(0, "roughness");
 	shader->setFloat(0.5, "ao");
@@ -118,12 +136,14 @@ Water::~Water()
 {
 	free(vao);
 	free(shader);
+	free(normalText);
 }
 
 void Water::draw() {
 	waterLogic();
 	vao->use();
 	useShader();
+	useTextures();
 	if(geometry) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glDrawArrays(GL_TRIANGLES, 0, triangles.size());

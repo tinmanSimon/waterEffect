@@ -1,5 +1,6 @@
 #version 330 core
 layout (location = 0) in vec3 aPos;
+layout (location = 1) in vec2 textPos;
 uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
@@ -22,6 +23,7 @@ uniform struct WAVES {
 } waves;
 
 out vec3 worldNormal;
+out vec2 texCord;
 
 vec3 calPos(){
 	vec3 result = aPos;
@@ -46,6 +48,7 @@ vec3 calNormal(){
 
 void main()
 {
+	texCord = textPos;
 	worldNormal = calNormal();
 	vec4 w = model * vec4(calPos(), 1.0f);
 	geo_in.WorldP = vec3(w);

@@ -26,6 +26,11 @@ private:
 	void useShader();
 	void initShader();
 	void waterLogic();
+
+	//normal mapping
+	Texture* normalText;
+	void useTextures();
+	void initTextures();
 public:
 	Water() {}
 	Water(int w, int l, float s = 0.5f);

@@ -1,8 +1,10 @@
-﻿  Drawer.cpp
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(49): warning C4018: '<': signed/unsigned mismatch
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(53): warning C4018: '<': signed/unsigned mismatch
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(57): warning C4018: '<': signed/unsigned mismatch
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(60): warning C4018: '<': signed/unsigned mismatch
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(63): warning C4018: '<': signed/unsigned mismatch
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(66): warning C4018: '<': signed/unsigned mismatch
+﻿  Water.cpp
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Water.cpp(11): warning C4018: '<': signed/unsigned mismatch
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Water.cpp(12): warning C4018: '<': signed/unsigned mismatch
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Water.cpp(46): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Water.cpp(63): warning C4002: too many arguments for function-like macro invocation 'assert'
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Water.cpp(74): warning C4018: '<': signed/unsigned mismatch
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Water.cpp(92): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Water.cpp(114): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Water.cpp(116): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   water.vcxproj -> C:\Users\wudis\Documents\graphics\projects\water\water\Debug\water.exe

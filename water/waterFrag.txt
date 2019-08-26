@@ -6,9 +6,12 @@ in GEO_OUT {
 } geo_out;
 
 in vec3 worldNormal;
+in vec2 texCord;
+uniform sampler2D normalMap;
 
 // material parameters
 uniform vec3 albedo;
+//vec3 albedo = vec3(0, 0.412, 0.58);
 uniform float metallic;
 uniform float roughness;
 uniform float ao;
@@ -66,7 +69,7 @@ vec3 fresnelSchlick(float cosTheta, vec3 F0)
 void main()
 {		
 	WorldPos = geo_out.WorldP;
-	Normal = worldNormal; //geo_out.wNormal;
+	Normal = worldNormal ;//+ texture(normalMap, texCord).rbg; //geo_out.wNormal;
     vec3 N = normalize(Normal);
     vec3 V = normalize(camPos - WorldPos);
 
@@ -122,5 +125,7 @@ void main()
 
     FragColor = vec4(color, 1.0);
 
-	//FragColor = vec4(abs(Normal.x), abs(Normal.y), abs(Normal.z), 1.0);
+	//color = texture(normalMap, texCord).rbg;
+	//color = pow(color, vec3(2.2/1.0)); 
+	//FragColor = vec4(color, 1.0);
 }
