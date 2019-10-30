@@ -49,7 +49,7 @@ vec3 calNormal(){
 void main()
 {
 	texCord = textPos;
-	worldNormal = calNormal();
+	worldNormal = vec3(model * vec4(calNormal(), 1.0f));
 	vec4 w = model * vec4(calPos(), 1.0f);
 	geo_in.WorldP = vec3(w);
     gl_Position =  projection * view * w;

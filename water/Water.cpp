@@ -89,11 +89,11 @@ void Water::useShader() {
 	shader->setFloat(t, "t");
 
 	//config for frag shader
-	shader->setVec3(0, 0.412, 0.58, "albedo");
+	shader->setVec3(0, 1, 1, "albedo");
 	shader->setFloat(0, "metallic");
 	shader->setFloat(0, "roughness");
-	shader->setFloat(0.5, "ao");
-	shader->setVec3(0.5, 0.5, 0.5, "lightPosition");
+	shader->setFloat(0.8, "ao");
+	shader->setVec3(0, 0.5, 0.5, "lightPosition");
 	shader->setVec3(1.0f, 1.0f, 1.0f, "lightColor");
 	shader->setVec3(cam->cameraPos.x, cam->cameraPos.y, cam->cameraPos.z, "camPos");
 }
@@ -104,7 +104,7 @@ void Water::initShader() {
 
 	//init vertex shader
 	string tmp;
-	int waveSize = 30;
+	int waveSize = 99;
 	shader->setInt(waveSize, "waveSize");
 	forUp(i, waveSize) {
 		vec2 direction = vec2(randFloat(-1.0f, 1.0f), randFloat(-1.0f, 1.0f));
