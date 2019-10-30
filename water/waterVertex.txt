@@ -5,9 +5,10 @@ uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
 uniform float t;
-out GEO_IN {
+out FRAG_IN {
+	vec3 wNormal;
 	vec3 WorldP;
-} geo_in;
+} frag_in;
 
 uniform int waveSize;
 
@@ -22,9 +23,6 @@ uniform struct WAVES {
   float ws[100];
 } waves;
 
-out vec3 worldNormal;
-out vec2 texCord;
-
 vec3 calPos(){
 	vec3 result = aPos;
 	result.y = 0;
@@ -37,7 +35,7 @@ vec3 calPos(){
 }
 
 vec3 calNormal(){
-	vec3 result = vec3(0,0,1);
+	vec3 result = vec3(0,1,0);
 	for(int i = 0; i < waveSize; ++i){
 		result.x -= waves.Ds[i].x * waves.ws[i] * waves.As[i] * cos(waves.ws[i] * dot(waves.Ds[i], vec2(aPos.x, aPos.z)) + waves.phase_constants[i] * t);
 		result.z -= waves.Ds[i].y * waves.ws[i] * waves.As[i] * cos(waves.ws[i] * dot(waves.Ds[i], vec2(aPos.x, aPos.z)) + waves.phase_constants[i] * t);
@@ -48,9 +46,8 @@ vec3 calNormal(){
 
 void main()
 {
-	texCord = textPos;
-	worldNormal = vec3(model * vec4(calNormal(), 1.0f));
 	vec4 w = model * vec4(calPos(), 1.0f);
-	geo_in.WorldP = vec3(w);
+	frag_in.WorldP = vec3(w);
+	frag_in.wNormal = normalize(calNormal());
     gl_Position =  projection * view * w;
 }  

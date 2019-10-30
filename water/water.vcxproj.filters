@@ -100,5 +100,8 @@
     <Text Include="waterFrag2.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="waterDebugFrag.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

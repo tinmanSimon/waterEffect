@@ -153,6 +153,7 @@
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="waterDebugFrag.txt" />
     <Text Include="waterFrag.txt" />
     <Text Include="waterFrag2.txt" />
     <Text Include="waterGeo.txt" />

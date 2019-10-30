@@ -44,6 +44,7 @@ void Water::waterLogic() {
 
 	//Todo change t to real time simulation
 	t = glfwGetTime();
+	//t = 10;
 }
 
 void Water::useTextures() {
@@ -60,7 +61,9 @@ Water::Water(int width, int length, float s) :
 	//note width + 1 because we want start from 0 and end up with w, so w + 1 lines. Same for l.
 	w{ width + 1 }, l{ length + 1 }, verticesSpace{ s }, model{ mat4(1) } 
 {
-	assert(width > 0, length > 0, s > 0);
+	assert(width > 0);
+	assert(length > 0);
+	assert(s > 0);
 
 	//construct vao and shader
 	vao = new VAO(false);
@@ -89,12 +92,12 @@ void Water::useShader() {
 	shader->setFloat(t, "t");
 
 	//config for frag shader
-	shader->setVec3(0, 1, 1, "albedo");
-	shader->setFloat(0, "metallic");
-	shader->setFloat(0, "roughness");
-	shader->setFloat(0.8, "ao");
-	shader->setVec3(0, 0.5, 0.5, "lightPosition");
-	shader->setVec3(1.0f, 1.0f, 1.0f, "lightColor");
+	shader->setVec3(0, 0.412, 0.58, "albedo");
+	shader->setFloat(0.5, "metallic");
+	shader->setFloat(0.5, "roughness");
+	shader->setFloat(0.5, "ao");
+	shader->setVec3(0.5, 0.5, 0.5, "lightPosition");
+	shader->setVec3(1.0f, 1.0f, 0.0f, "lightColor");
 	shader->setVec3(cam->cameraPos.x, cam->cameraPos.y, cam->cameraPos.z, "camPos");
 }
 
@@ -104,10 +107,12 @@ void Water::initShader() {
 
 	//init vertex shader
 	string tmp;
-	int waveSize = 99;
+	int waveSize = 30;
 	shader->setInt(waveSize, "waveSize");
+	//vec2 dirct = vec2(randFloat(-1.0f, 1.0f), randFloat(-1.0f, 1.0f));
 	forUp(i, waveSize) {
-		vec2 direction = vec2(randFloat(-1.0f, 1.0f), randFloat(-1.0f, 1.0f));
+		vec2 dirct = vec2(randFloat(-1.0f, 1.0f), randFloat(-1.0f, 1.0f));
+		vec2 direction = vec2(dirct.x + randFloat(-0.4f, 0.4f), dirct.y + randFloat(-0.4f, 0.4f));
 		float A = randFloat(0, 1/(float)waveSize); //waves amplitude
 		float speed = randFloat(0.0f, 0.8f); //waves speed
 		float wavelength = randFloat(1.0f, 3.0f); 

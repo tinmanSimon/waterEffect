@@ -32,7 +32,7 @@ Camera::Camera()
 	view = mat4(1.0f);
 	projection = mat4(1.0f);
 	n = 0.1f;
-	f = 100.0f;
+	f = 400.0f;
 
 	camProtoSpeed = 10.0f;
 }
