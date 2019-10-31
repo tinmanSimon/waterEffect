@@ -8,6 +8,8 @@
 #include "Texture.h"
 #include "Water.h"
 #include "RenderObject.h"
+#include "WaterGround.h"
+#include "GlassGround.h"
 
 extern bool pause;
 extern int skyboxes;

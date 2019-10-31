@@ -6,7 +6,7 @@ class RenderObject
 {
 public:
 	RenderObject();
-	~RenderObject();
+	virtual ~RenderObject();
 	virtual void draw() { std::cout << "Error! RenderObject's virtual draw function is called!"; }
 };
 #endif

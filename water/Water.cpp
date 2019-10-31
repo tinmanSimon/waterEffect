@@ -11,26 +11,28 @@ void Water::addTriangles() {
 	forUp(i, vertices.size() - 1) {
 		forUp(j, vertices[i].size() - 1) {
 			triangles[triangleCount++] = vertices[i][j];
-			triangles[triangleCount++] = vec3(0.0f, 0.0f, 0.0f);
+			//triangles[triangleCount++] = vec3(0.0f, 0.0f, 0.0f);
 			triangles[triangleCount++] = vertices[i][j+1];
-			triangles[triangleCount++] = vec3(1.0f, 0.0f, 0.0f);
+			//triangles[triangleCount++] = vec3(1.0f, 0.0f, 0.0f);
 			triangles[triangleCount++] = vertices[i+1][j+1];
-			triangles[triangleCount++] = vec3(1.0f, 1.0f, 0.0f);
+			//triangles[triangleCount++] = vec3(1.0f, 1.0f, 0.0f);
 
+			
 			triangles[triangleCount++] = vertices[i][j];
-			triangles[triangleCount++] = vec3(0.0f, 0.0f, 0.0f);
+			//triangles[triangleCount++] = vec3(0.0f, 0.0f, 0.0f);
 			triangles[triangleCount++] = vertices[i + 1][j + 1];
-			triangles[triangleCount++] = vec3(1.0f, 1.0f, 0.0f);
+			//triangles[triangleCount++] = vec3(1.0f, 1.0f, 0.0f);
 			triangles[triangleCount++] = vertices[i + 1][j];
-			triangles[triangleCount++] = vec3(0.0f, 1.0f, 0.0f);
+			//triangles[triangleCount++] = vec3(0.0f, 1.0f, 0.0f);
+			
 		}
 	}
 }
 
 void Water::addTrianglesToBuffer() {
 	vao->bufferData(&triangles[0], triangles.size()*sizeof(vec3));
-	vao->addAttribute(0, 3, 6*sizeof(float), 0);
-	vao->addAttribute(1, 2, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+	vao->addAttribute(0, 3, 3*sizeof(float), 0);
+	//vao->addAttribute(1, 2, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 }
 
 void Water::createShader(const char* vertex, const char* frag) {
@@ -57,6 +59,11 @@ void Water::initTextures() {
 	//normalText = new Texture("water.jpg");
 }
 
+void Water::releaseResources() {
+	vertices.clear();
+	triangles.clear();
+}
+
 Water::Water(int width, int length, float s) : 
 	//note width + 1 because we want start from 0 and end up with w, so w + 1 lines. Same for l.
 	w{ width + 1 }, l{ length + 1 }, verticesSpace{ s }, model{ mat4(1) } 
@@ -79,8 +86,10 @@ Water::Water(int width, int length, float s) :
 		}
 	}
 	addTriangles();
+	trianglesCount = triangles.size();
 	addTrianglesToBuffer();
-	initTextures();
+	//initTextures();
+	releaseResources();
 }
 
 void Water::useShader() {
@@ -96,8 +105,8 @@ void Water::useShader() {
 	shader->setFloat(0.5, "metallic");
 	shader->setFloat(0.5, "roughness");
 	shader->setFloat(0.5, "ao");
-	shader->setVec3(0.5, 0.5, 0.5, "lightPosition");
-	shader->setVec3(1.0f, 1.0f, 0.0f, "lightColor");
+	shader->setVec3(0, 0.5, 0.8, "lightPosition");
+	shader->setVec3(1, 1, 0, "lightColor");
 	shader->setVec3(cam->cameraPos.x, cam->cameraPos.y, cam->cameraPos.z, "camPos");
 }
 
@@ -141,15 +150,15 @@ Water::~Water()
 {
 	free(vao);
 	free(shader);
-	free(normalText);
+	if(normalText != NULL) free(normalText);
 }
 
 void Water::draw() {
 	waterLogic();
 	vao->use();
 	useShader();
-	useTextures();
+	//useTextures();
 	if(geometry) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	glDrawArrays(GL_TRIANGLES, 0, triangles.size());
+	glDrawArrays(GL_TRIANGLES, 0, trianglesCount);
 }

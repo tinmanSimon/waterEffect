@@ -54,6 +54,12 @@
     <ClCompile Include="RenderObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="GlassGround.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="WaterGround.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -83,6 +89,12 @@
     <ClInclude Include="RenderObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GlassGround.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="WaterGround.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="waterFrag.txt">
@@ -101,6 +113,18 @@
       <Filter>Resource Files</Filter>
     </Text>
     <Text Include="waterDebugFrag.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="waterGroundVertex.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="waterGroundFrag.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="glassGroundVertex.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="glassGroundFrag.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

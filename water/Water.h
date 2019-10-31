@@ -10,6 +10,7 @@ private:
 	float verticesSpace;
 	float t; //time is changing
 	std::vector< glm::vec3> triangles;
+	long trianglesCount = 0;
 	VAO* vao;
 	Shader* shader;
 	Shader* testShader;
@@ -31,6 +32,7 @@ private:
 	Texture* normalText;
 	void useTextures();
 	void initTextures();
+	void releaseResources();
 public:
 	Water() {}
 	Water(int w, int l, float s = 0.5f);

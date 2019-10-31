@@ -1,9 +1,2 @@
-﻿  Water.cpp
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Water.cpp(11): warning C4018: '<': signed/unsigned mismatch
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Water.cpp(12): warning C4018: '<': signed/unsigned mismatch
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Water.cpp(46): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Water.cpp(77): warning C4018: '<': signed/unsigned mismatch
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Water.cpp(95): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Water.cpp(119): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Water.cpp(121): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+﻿  GlassGround.cpp
   water.vcxproj -> C:\Users\wudis\Documents\graphics\projects\water\water\Debug\water.exe

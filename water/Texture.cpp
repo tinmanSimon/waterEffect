@@ -93,6 +93,8 @@ Texture::Texture(const char* filename, string typestr, string pathstr, GLenum RG
 			cout << "ERROR! Unknown format of texture: " << filename << endl;
 		}
 
+		//cout << "nrChannels = " << nrChannels << endl;
+
 		if (wrapping_method == 1) {
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
