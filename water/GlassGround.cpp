@@ -2,7 +2,7 @@
 using namespace std;
 using namespace glm;
 
-const float edge = 20;
+const float edge = 40;
 static mat4 model, view, proj;
 
 void GLASSGROUND::addTrianglesToBuffer() {
@@ -51,6 +51,10 @@ void useShader(Shader* shader, Texture* text) {
 	shader->setmat4(model, "model");
 	shader->setmat4(view, "view");
 	shader->setmat4(proj, "projection");
+
+	shader->setVec3(0, 0.5, 0.8, "lightPosition");
+	shader->setVec3(1, 1, 0, "lightColor");
+	shader->setVec3(cam->cameraPos.x, cam->cameraPos.y, cam->cameraPos.z, "camPos");
 
 	//for texture
 	shader->setInt(0, "texture0");

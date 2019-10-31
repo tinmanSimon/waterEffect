@@ -1,2 +1,3 @@
 ﻿  GlassGround.cpp
+C:\Users\wudis\Documents\graphics\projects\water\water\water\GlassGround.cpp(55): warning C4305: 'argument': truncation from 'double' to 'float'
   water.vcxproj -> C:\Users\wudis\Documents\graphics\projects\water\water\Debug\water.exe
