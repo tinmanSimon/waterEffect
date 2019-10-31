@@ -130,6 +130,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Drawer.cpp" />
     <ClCompile Include="extra.cpp" />
+    <ClCompile Include="FrameBuffer.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="GlassGround.cpp" />
     <ClCompile Include="main.cpp" />
@@ -146,6 +147,7 @@
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Drawer.h" />
+    <ClInclude Include="FrameBuffer.h" />
     <ClInclude Include="GlassGround.h" />
     <ClInclude Include="RenderObject.h" />
     <ClInclude Include="Shader.h" />
@@ -157,6 +159,8 @@
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="frameBufferFrag.txt" />
+    <Text Include="frameBufferVertex.txt" />
     <Text Include="glassGroundFrag.txt" />
     <Text Include="glassGroundVertex.txt" />
     <Text Include="waterDebugFrag.txt" />

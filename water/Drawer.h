@@ -10,6 +10,7 @@
 #include "RenderObject.h"
 #include "WaterGround.h"
 #include "GlassGround.h"
+#include "FrameBuffer.h"
 
 extern bool pause;
 extern int skyboxes;

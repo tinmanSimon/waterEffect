@@ -60,6 +60,9 @@
     <ClCompile Include="WaterGround.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="FrameBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -95,6 +98,9 @@
     <ClInclude Include="WaterGround.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FrameBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="waterFrag.txt">
@@ -125,6 +131,12 @@
       <Filter>Resource Files</Filter>
     </Text>
     <Text Include="glassGroundFrag.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="frameBufferVertex.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="frameBufferFrag.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

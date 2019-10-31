@@ -11,7 +11,7 @@
 
 
 
-
+extern Window* window;
 
 using namespace std;
 using namespace glm;

@@ -4,6 +4,7 @@
 using namespace std;
 
 Window* window;
+glm::vec3 clearColor = glm::vec3(0.529f, 0.808f, 0.922f);
 
 Window::Window(char* window_name, float _width, float _height)
 {
