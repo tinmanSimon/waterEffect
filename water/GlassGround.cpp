@@ -2,7 +2,6 @@
 using namespace std;
 using namespace glm;
 
-const float edge = 40;
 static mat4 model, view, proj;
 
 void GLASSGROUND::addTrianglesToBuffer() {
@@ -11,7 +10,7 @@ void GLASSGROUND::addTrianglesToBuffer() {
 	vao->addAttribute(1, 2, 6 * sizeof(float), (void*)(3 * sizeof(float)));
 }
 
-GLASSGROUND::GLASSGROUND(float a) : altitude{ a } {
+GLASSGROUND::GLASSGROUND(float a, float e) : altitude{ a }, edge{ e } {
 	//add triangles
 	triangles.push_back(vec3(-edge, a, edge));
 	triangles.push_back(vec3(0, 1, 0)); //this part is for texture coordinates
@@ -67,4 +66,12 @@ void GLASSGROUND::draw() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glDrawArrays(GL_TRIANGLES, 0, traingleSize);
+}
+
+float GLASSGROUND::getAltitude() {
+	return altitude;
+}
+
+float GLASSGROUND::getEdge() {
+	return edge;
 }

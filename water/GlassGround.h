@@ -9,6 +9,7 @@ class GLASSGROUND : public RenderObject
 {
 private:
 	float altitude;
+	float edge;
 	std::vector< glm::vec3> triangles;
 	long traingleSize;
 
@@ -21,9 +22,11 @@ private:
 	void addTrianglesToBuffer();
 public:
 	GLASSGROUND() {}
-	GLASSGROUND(float a);
+	GLASSGROUND(float a, float e = 40.0f);
 	~GLASSGROUND();
 	void draw();
+	float getAltitude();
+	float getEdge();
 };
 #endif
 

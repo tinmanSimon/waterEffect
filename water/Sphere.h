@@ -67,6 +67,8 @@ public:
 
 	glm::vec3 velocity;
 	void sphere_translate(glm::vec3 v);
+	glm::vec3 getWorldPos();
+	float getRadius();
 };
 
 extern std::vector<Sphere*> spheres;

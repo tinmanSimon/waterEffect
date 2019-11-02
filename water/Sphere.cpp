@@ -225,3 +225,11 @@ void Sphere::useTextures(){
 void Sphere::sphere_translate(glm::vec3 v) {
 	model = translate(model, v);
 }
+
+vec3 Sphere::getWorldPos() {
+	return vec3(model * vec4(pos, 1));
+}
+
+float Sphere::getRadius() {
+	return radius;
+}

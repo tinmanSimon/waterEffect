@@ -4,6 +4,7 @@
 using namespace std;
 
 Window* the_window;
+extern bool runAnimation;
 
 Window::Window(char* window_name, float _width, float _height)
 {
@@ -31,6 +32,10 @@ void processInput(GLFWwindow* window, int key, int scancode, int action, int mod
 		glfwSetWindowShouldClose(window, true);
 	if (key == GLFW_KEY_L && action == GLFW_PRESS) {
 		Water::geometry = !Water::geometry;
+	}
+	if (key == GLFW_KEY_K && action == GLFW_PRESS) {
+		//todo flag for gravity animation
+		runAnimation = !runAnimation;
 	}
 
 }
