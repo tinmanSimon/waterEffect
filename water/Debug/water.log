@@ -1,10 +1,10 @@
 ﻿  Drawer.cpp
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(67): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(106): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(120): warning C4018: '<': signed/unsigned mismatch
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(124): warning C4018: '<': signed/unsigned mismatch
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(128): warning C4018: '<': signed/unsigned mismatch
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(131): warning C4018: '<': signed/unsigned mismatch
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(134): warning C4018: '<': signed/unsigned mismatch
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(137): warning C4018: '<': signed/unsigned mismatch
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(50): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(124): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(142): warning C4018: '<': signed/unsigned mismatch
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(146): warning C4018: '<': signed/unsigned mismatch
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(150): warning C4018: '<': signed/unsigned mismatch
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(153): warning C4018: '<': signed/unsigned mismatch
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(156): warning C4018: '<': signed/unsigned mismatch
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(159): warning C4018: '<': signed/unsigned mismatch
   water.vcxproj -> C:\Users\wudis\Documents\graphics\projects\water\water\Debug\water.exe

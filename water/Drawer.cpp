@@ -17,6 +17,8 @@ Shader* msaaShader;
 Sphere* player;
 GLASSGROUND* glass;
 
+vector<Sphere*> render_spheres;
+
 vector<RenderObject*> Drawer::renderObjects;
 //vector<Water*> Drawer::renderObjects;
 
@@ -36,25 +38,6 @@ Drawer::~Drawer()
 {
 }
 
-void collisionDetect(Sphere* s, GLASSGROUND* g) {
-	float groundAltitude = g->getAltitude();
-	float edge = g->getEdge();
-	vec3 sphereOrigin = s->getWorldPos();
-	if (sphereOrigin.x < -edge || sphereOrigin.x > edge || sphereOrigin.z < -edge || sphereOrigin.z > edge) return;
-
-	//now we only test its altitude
-	float diff = abs(sphereOrigin.y - groundAltitude) - (s->getRadius() - threshold);
-	//cout << "sphereOrigin.y = " << sphereOrigin.y << ", radius: " << s->getRadius() << ", diff = " << diff << endl;
-	if (diff <= 0) {
-		//we are hit
-		//runAnimation = false;
-		s->sphere_translate(vec3(0, -diff, 0));
-		s->velocity = reflect(s->velocity, vec3(0, 1, 0));
-		s->velocity = energyConsumptionRate * s->velocity;
-		if (length(s->velocity) < 0.1f)s->velocity = vec3(0);
-	}
-
-}
 
 void Drawer::drawerinit() {
 	//init simone func
@@ -73,13 +56,18 @@ void Drawer::drawerinit() {
 	renderObjects.push_back(new Water(600, 600, 0.6f));
 	renderObjects.push_back(new WATERGROUND(-2.0f));
 	renderObjects.push_back(new WATERGROUND(-200.0f));
+
+	
+	forUp(i, 10) {
+		render_spheres.push_back(new Sphere(vec3(i * 6 - 40, i * 10, i * 6 - 40), 1, 400, 100));
+		renderObjects.push_back(render_spheres[i]);
+	}
+	
+
+	
+	
 	renderObjects.push_back(player);
 	renderObjects.push_back(glass);
-}
-
-void updateSphere(Sphere* s) {
-	s->sphere_translate(s->velocity * delta_t + 0.5f * g_const * delta_t * delta_t * vec3(0, -1.0f, 0));
-	s->velocity += g_const * delta_t * vec3(0, -1.0f, 0);
 }
 
 bool sphereIsStatic(Sphere* s, GLASSGROUND* g) {
@@ -99,6 +87,36 @@ bool sphereIsStatic(Sphere* s, GLASSGROUND* g) {
 
 }
 
+void updateSphere(Sphere* s) {
+	if (sphereIsStatic(s, glass)) return;
+	s->sphere_translate(s->velocity * delta_t + 0.5f * g_const * delta_t * delta_t * vec3(0, -1.0f, 0));
+	s->velocity += g_const * delta_t * vec3(0, -1.0f, 0);
+}
+
+void collisionDetect(Sphere* s, GLASSGROUND* g) {
+	if (sphereIsStatic(s, g)) return;
+
+	float groundAltitude = g->getAltitude();
+	float edge = g->getEdge();
+	vec3 sphereOrigin = s->getWorldPos();
+	if (sphereOrigin.x < -edge || sphereOrigin.x > edge || sphereOrigin.z < -edge || sphereOrigin.z > edge) return;
+
+	//now we only test its altitude
+	float diff = abs(sphereOrigin.y - groundAltitude) - (s->getRadius() - threshold);
+	//cout << "sphereOrigin.y = " << sphereOrigin.y << ", radius: " << s->getRadius() << ", diff = " << diff << endl;
+	if (diff <= 0) {
+		//we are hit
+		//runAnimation = false;
+		s->sphere_translate(vec3(0, -diff, 0));
+		s->velocity = reflect(s->velocity, vec3(0, 1, 0));
+		s->velocity = energyConsumptionRate * s->velocity;
+		if (length(s->velocity) < 0.1f)s->velocity = vec3(0);
+	}
+
+}
+
+
+
 void logic() {
 	updateDeltaTime();
 
@@ -108,7 +126,11 @@ void logic() {
 	if (runAnimation) {
 		updateSphere(player);
 		collisionDetect(player, glass);
-		if (sphereIsStatic(player, glass)) runAnimation = false;
+
+		forUp(i, 10) {
+			updateSphere(render_spheres[i]);
+			collisionDetect(render_spheres[i], glass);
+		}
 	}
 
 	//update camera
