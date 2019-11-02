@@ -4,13 +4,15 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
+#include <glm/gtx/string_cast.hpp>
 #include <vector>
 #include "VAO.h"
 #include "Shader.h"
 #include "Camera.h"
+#include "RenderObject.h"
+#include "Texture.h"
 
-class Sphere
-{
+class Sphere : public RenderObject {
 	glm::vec3 pos;
 	float radius;
 	int slices, layers;
@@ -19,6 +21,18 @@ class Sphere
 	Shader* shader = NULL;
 
 	glm::mat4 model, view, proj;
+
+	const char* vertex = "sphereVertex.txt";
+	const char* frag = "sphereFrag.txt";
+	long pointSize;
+	long triangleIndiciesSize;
+	long uvSize;
+
+	Texture* albedoMap;
+	Texture* normalMap;
+	Texture* metallicMap;
+	Texture* roughnessMap;
+	Texture* aoMap;
 
 
 public:
@@ -36,14 +50,23 @@ public:
 	void setShader(Shader* s);
 	//drawType == 1 then it's points, 3 then it's lines, 2 then it's triangles
 	void draw(int drawType);
-	void update(glm::mat4 m, glm::mat4 v, glm::mat4 p);
+	void draw();
+	void update(glm::mat4 m);
 
 	std::vector<glm::vec3> points;
 	std::vector<glm::vec3> normals;
 	std::vector<glm::u32vec3> trianglesIndices;
+	std::vector<glm::vec2> uvs;
 
 	float roughness = 0.5f;
 	float metallic = 0.5f;
+
+	void useShader();
+	void setTextures();
+	void useTextures();
+
+	glm::vec3 velocity;
+	void sphere_translate(glm::vec3 v);
 };
 
 extern std::vector<Sphere*> spheres;

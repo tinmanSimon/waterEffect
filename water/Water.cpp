@@ -4,6 +4,7 @@ using namespace std;
 using namespace glm;
 
 bool Water::geometry = true;
+
 extern float t;
 
 void Water::addTriangles() {

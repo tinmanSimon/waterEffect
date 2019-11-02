@@ -12,18 +12,22 @@ Sphere::Sphere()
 }
 */
 
-Sphere::Sphere(glm::vec3 position, float r, int sli, int lay) : pos{ vec3(0,0,0) }, radius{ r }, slices{ sli }, layers{ lay }
-{
+static float PI_S = 3.1415926;
+
+Sphere::Sphere(glm::vec3 position, float r, int sli, int lay) : pos{ vec3(0,0,0) }, radius{ r }, slices{ sli }, layers{ lay }, velocity{vec3(0)} {
 	//Step 1, generate all the points.
 	//init points
 	int pointCount = 0;
 	int normalCount = 0;
+	int uvCount = 0;
 	points.resize(slices* (layers - 1) + 2);
 	normals.resize(slices* (layers - 1) + 2);
+	uvs.resize(slices* (layers - 1) + 2);
 
 	//generate point at the top
 	points[pointCount++] = vec3(pos.x, pos.y + radius, pos.z);
 	normals[normalCount++] = vec3(0.0f, 1.0f, 0.0f);
+	uvs[uvCount++] = vec2((0.5f + atan2(0, 0) / (2*PI_S)), 0.5f - asin(-1) / PI_S);
 
 	//generate all the points in the middle layers
 	for (float i = 1.0f; i < layers; ++i) {
@@ -38,12 +42,17 @@ Sphere::Sphere(glm::vec3 position, float r, int sli, int lay) : pos{ vec3(0,0,0)
 			z = L * (float)sin(radians(curtheta));
 			points[pointCount++] = vec3(x, y, z) + pos;
 			normals[normalCount++] = vec3(x, y, z);
+			vec3 the_vec = normalize(vec3(0) - (vec3(x, y, z)+ pos));
+			uvs[uvCount++] = vec2((0.5f + atan2(the_vec.z, the_vec.x) / (2*PI_S)), 0.5f - asin(the_vec.y) / PI_S);
 		}
 	}
 
 	//generate point at the bottom
 	points[pointCount++] = vec3(pos.x, pos.y - radius, pos.z);
 	normals[normalCount++] = vec3(0.0f, -1.0f, 0.0f);
+	uvs[uvCount++] = vec2((0.5f + atan2(0, 0) / (2*PI_S)), 0.5f - asin(1) / PI_S);
+
+	//forUp(i, uvs.size()) cout<<glm::to_string(uvs[i])<<endl;
 
 	//Step 2, generate all the indices for triangles
 	int traingleCount = 0;
@@ -79,12 +88,25 @@ Sphere::Sphere(glm::vec3 position, float r, int sli, int lay) : pos{ vec3(0,0,0)
 		else trianglesIndices[traingleCount++] = u32vec3(startPoint + i, endPoint, startPoint + i + 1);
 	}
 
-	
+	createVAO();
+	bufferData(2);
+	createShader(vertex, frag);
+	pointSize = points.size();
+	triangleIndiciesSize = trianglesIndices.size();
+	uvSize = uvs.size();
+	points.clear();
+	trianglesIndices.clear();
+	uvs.clear();
+
+	vec3 trans = position - pos;
+	model = translate(mat4(1), trans);
+	setTextures();
 }
 
 
-Sphere::~Sphere()
-{
+Sphere::~Sphere() {
+	delete vao;
+	delete shader;
 }
 
 void Sphere::createVAO() {
@@ -105,27 +127,42 @@ void Sphere::bufferData(int dataType) {
 
 	//triangles
 	else if (dataType == 2) {
-		vao->bufferData(NULL, points.size() * sizeof(vec3) + normals.size() * sizeof(vec3), &trianglesIndices[0], trianglesIndices.size()*sizeof(u32vec3));
+		vao->bufferData(NULL, points.size() * sizeof(vec3) + normals.size() * sizeof(vec3) + uvs.size() * sizeof(vec2), &trianglesIndices[0], trianglesIndices.size()*sizeof(u32vec3));
 		vao->bufferSubData(0, points.size() * sizeof(vec3), &points[0]);
 		vao->bufferSubData(points.size() * sizeof(vec3), normals.size() * sizeof(vec3), &normals[0]);
+		vao->bufferSubData(points.size() * sizeof(vec3) + normals.size() * sizeof(vec3), uvs.size() * sizeof(vec2), &uvs[0]);
 		vao->addAttribute(0, 3, 3 * sizeof(float), 0);
-		vao->addAttribute(2, 3, 3 * sizeof(float), (void*)(points.size() * sizeof(vec3)));
+		vao->addAttribute(1, 3, 3 * sizeof(float), (void*)(points.size() * sizeof(vec3)));
+		vao->addAttribute(2, 2, 2 * sizeof(float), (void*)(points.size() * sizeof(vec3) + normals.size() * sizeof(vec3)));
 	}
 	else cout << "ERROR! wrong data type for bufferdata! datatype = " << dataType << endl;
 }
 
 void Sphere::bufferData(VAO* v, int dataType) {
+	if(vao != NULL) delete vao;
 	vao = v;
 	bufferData(dataType);
 }
 
 void Sphere::createShader(const char* vertex, const char* frag) {
 	shader = new Shader(vertex, frag);
-	shaders.push_back(shader);
+	//shaders.push_back(shader);
 }
 
 void Sphere::setShader(Shader* s) {
+	if(shader != NULL) delete shader;
 	shader = s;
+}
+
+void Sphere::useShader(){
+	view = cam->view;
+	proj = cam->projection;
+
+	shader->use();
+	shader->setmat4(model, "model");
+	shader->setmat4(view, "view");
+	shader->setmat4(proj, "projection");
+	shader->setVec3(cam->cameraPos.x, cam->cameraPos.y, cam->cameraPos.z, "camPos");
 }
 
 void Sphere::draw(int drawType) {
@@ -138,18 +175,18 @@ void Sphere::draw(int drawType) {
 		return;
 	}
 	vao->use();
-	shader->use();
-	shader->setmat4(model, "model");
-	shader->setmat4(view, "view");
-	shader->setmat4(proj, "projection");
+	useShader();
+	useTextures();
 	if (drawType == 1) glDrawArrays(GL_POINTS, 0, points.size());
-	else if(drawType == 2) glDrawElements(GL_TRIANGLES, 3*trianglesIndices.size(), GL_UNSIGNED_INT, 0);
+	else if(drawType == 2) glDrawElements(GL_TRIANGLES, 3*triangleIndiciesSize, GL_UNSIGNED_INT, 0);
 }
 
-void Sphere::update(mat4 m, mat4 v, mat4 p) {
+void Sphere::draw(){
+	draw(2);
+}
+
+void Sphere::update(mat4 m) {
 	model = m;
-	view = v;
-	proj = p;
 	shader->setVec3(cam->cameraPos.x, cam->cameraPos.y, cam->cameraPos.z, "camPos");
 	shader->setFloat(metallic, "metallic");
 	shader->setFloat(roughness, "roughness");
@@ -159,4 +196,32 @@ void Sphere::update(mat4 m, mat4 v, mat4 p) {
 	shader->setVec3(t, 1.0f-t, 0.0f, "albedo");
 	//shader->setVec3(0.5f,0.0f, 0.0f, "albedo");
 	shader->setFloat(1.0f, "ao");
+}
+
+void Sphere::setTextures(){
+	albedoMap = new Texture("copper-rock1-alb.png");
+	aoMap = new Texture("copper-rock1-ao.png");
+	normalMap = new Texture("copper-rock1-normal.png");
+	metallicMap = new Texture("copper-rock1-metal.png");
+	roughnessMap = new Texture("copper-rock1-rough.png");
+	
+
+	shader->use();
+	shader->setInt(0, "albedoMap");
+	shader->setInt(1, "normalMap");
+	shader->setInt(2, "metallicMap");
+	shader->setInt(3, "roughnessMap");
+	shader->setInt(4, "aoMap");
+}
+
+void Sphere::useTextures(){
+	albedoMap->use(GL_TEXTURE0);
+	normalMap->use(GL_TEXTURE1);
+	metallicMap->use(GL_TEXTURE2);
+	roughnessMap->use(GL_TEXTURE3);
+	aoMap->use(GL_TEXTURE4);
+}
+
+void Sphere::sphere_translate(glm::vec3 v) {
+	model = translate(model, v);
 }

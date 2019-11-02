@@ -6,7 +6,7 @@ using namespace glm;
 Camera* cam;
 
 float lastPress = 0.0f;
-
+extern Window* the_window;
 
 Camera::Camera()
 {
@@ -44,14 +44,14 @@ Camera::~Camera()
 
 void Camera::update() {
 	view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
-	projection = glm::perspective(glm::radians(fov), window->width / window->height, n, f);
+	projection = glm::perspective(glm::radians(fov), the_window->width / the_window->height, n, f);
 	//projection = glm::perspective(glm::radians(fov), 7.0f/6.0f, n, f);
 }
 
 //adjust window size
 void framebuffer_size_callback(GLFWwindow * w, int width, int height) {
-	window->height = (float)height;
-	window->width = (float)width;
+	the_window->height = (float)height;
+	the_window->width = (float)width;
 	glViewport(0, 0, width, height);
 }
 

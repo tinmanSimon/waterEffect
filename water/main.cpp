@@ -11,7 +11,7 @@
 
 
 
-extern Window* window;
+extern Window* the_window;
 
 using namespace std;
 using namespace glm;
@@ -21,13 +21,13 @@ int main() {
 	float height = 1500;
 	char w_name[100] = "waterEffect";
 	
-	window = new Window(w_name, width, height);
-	if (window->init() != 0) {
+	the_window = new Window(w_name, width, height);
+	if (the_window->init() != 0) {
 		cout << "window init failed in main.cpp!" << endl;
 		return -1;
 	}
-	window->loop();
-	free(window);
+	the_window->loop();
+	free(the_window);
 	
 	
 	return 0;

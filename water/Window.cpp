@@ -3,8 +3,7 @@
 
 using namespace std;
 
-Window* window;
-glm::vec3 clearColor = glm::vec3(0.529f, 0.808f, 0.922f);
+Window* the_window;
 
 Window::Window(char* window_name, float _width, float _height)
 {
@@ -25,6 +24,32 @@ void cleanup() {
 		free(VAOS[i]);
 }
 */
+
+//this is for callback.
+void processInput(GLFWwindow* window, int key, int scancode, int action, int mods) {
+	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+		glfwSetWindowShouldClose(window, true);
+	if (key == GLFW_KEY_L && action == GLFW_PRESS) {
+		Water::geometry = !Water::geometry;
+	}
+
+}
+
+//this processes directly, so it makes movement smooth
+void processMovementInputs(GLFWwindow* window) {
+	if (cam != NULL) {
+		float cameraSpeed = cam->camProtoSpeed * cam->deltaTime;
+		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+			cam->cameraPos += cameraSpeed * cam->cameraFront;
+		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+			cam->cameraPos -= cameraSpeed * cam->cameraFront;
+		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+			cam->cameraPos -= normalize(cross(cam->cameraFront, cam->cameraUp)) * cameraSpeed;
+		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+			cam->cameraPos += normalize(cross(cam->cameraFront, cam->cameraUp)) * cameraSpeed;
+	}
+	else cout << "cam == NULL!" << endl;
+}
 
 int Window::init() {
 	glfwInit();
@@ -54,6 +79,7 @@ int Window::init() {
 	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 	glfwSetCursorPosCallback(window, mouse_callback);
 	glfwSetScrollCallback(window, scroll_callback);
+	glfwSetKeyCallback(window, processInput);
 
 
 	glEnable(GL_DEPTH_TEST); //z buffer
@@ -68,49 +94,16 @@ int Window::init() {
 	//init drawer
 	Drawer::drawerinit();
 
+	
+
 	return 0;
-}
-
-void processInput(GLFWwindow* window)
-{
-	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, true);
-
-	if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-		if (spheres[0]->roughness < 0.99f) spheres[0]->roughness += 0.01;
-	}
-	if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-		if (spheres[0]->roughness > 0.05f) spheres[0]->roughness -= 0.01;
-	}
-	if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
-		if (spheres[0]->metallic > 0.01f) spheres[0]->metallic -= 0.01;
-	}
-	if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-		if (spheres[0]->metallic < 0.99f) spheres[0]->metallic += 0.01;
-	}
-	if (glfwGetKey(window, GLFW_KEY_L) == GLFW_PRESS) {
-		Water::geometry = !Water::geometry;
-	}
-
-	if (cam != NULL) {
-		float cameraSpeed = cam->camProtoSpeed * cam->deltaTime;
-		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-			cam->cameraPos += cameraSpeed * cam->cameraFront;
-		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-			cam->cameraPos -= cameraSpeed * cam->cameraFront;
-		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-			cam->cameraPos -= normalize(cross(cam->cameraFront, cam->cameraUp)) * cameraSpeed;
-		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-			cam->cameraPos += normalize(cross(cam->cameraFront, cam->cameraUp)) * cameraSpeed;
-	}
-	else cout << "cam == NULL!" << endl;
 }
 
 
 void Window::loop() {
 
 	while (!glfwWindowShouldClose(window)) {
-		processInput(window);
+		processMovementInputs(window);
 		glClearColor(clearColor.x, clearColor.y, clearColor.z, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 
