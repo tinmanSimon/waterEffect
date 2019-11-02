@@ -1,12 +1,43 @@
-﻿  Drawer.cpp
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(62): warning C4018: '<': signed/unsigned mismatch
+﻿  Camera.cpp
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Camera.cpp(65): warning C4244: '-=': conversion from 'double' to 'float', possible loss of data
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Camera.cpp(79): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Camera.cpp(80): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Camera.cpp(89): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Camera.cpp(90): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Camera.cpp(91): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Camera.cpp(92): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Camera.cpp(115): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  Drawer.cpp
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(46): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(59): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
 C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(67): warning C4018: '<': signed/unsigned mismatch
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(71): warning C4018: '<': signed/unsigned mismatch
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(74): warning C4018: '<': signed/unsigned mismatch
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(77): warning C4018: '<': signed/unsigned mismatch
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(80): warning C4018: '<': signed/unsigned mismatch
-  FrameBuffer.cpp
-C:\Users\wudis\Documents\graphics\projects\water\water\water\FrameBuffer.cpp(43): warning C4244: 'argument': conversion from 'float' to 'GLsizei', possible loss of data
-C:\Users\wudis\Documents\graphics\projects\water\water\water\FrameBuffer.cpp(51): warning C4244: 'argument': conversion from 'float' to 'GLsizei', possible loss of data
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(72): warning C4018: '<': signed/unsigned mismatch
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(76): warning C4018: '<': signed/unsigned mismatch
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(79): warning C4018: '<': signed/unsigned mismatch
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(82): warning C4018: '<': signed/unsigned mismatch
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(85): warning C4018: '<': signed/unsigned mismatch
+  GlassGround.cpp
+C:\Users\wudis\Documents\graphics\projects\water\water\water\GlassGround.cpp(55): warning C4305: 'argument': truncation from 'double' to 'float'
+  Sphere.cpp
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Sphere.cpp(30): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Sphere.cpp(158): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  Water.cpp
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Water.cpp(12): warning C4018: '<': signed/unsigned mismatch
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Water.cpp(13): warning C4018: '<': signed/unsigned mismatch
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Water.cpp(85): warning C4018: '<': signed/unsigned mismatch
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Water.cpp(105): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Water.cpp(109): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Water.cpp(129): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Water.cpp(131): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  WaterGround.cpp
+C:\Users\wudis\Documents\graphics\projects\water\water\water\WaterGround.cpp(47): warning C4305: 'argument': truncation from 'double' to 'float'
+  Window.cpp
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Window.cpp(36): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Window.cpp(66): warning C4244: 'argument': conversion from 'float' to 'GLsizei', possible loss of data
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Window.cpp(80): warning C4305: '+=': truncation from 'double' to 'float'
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Window.cpp(83): warning C4305: '-=': truncation from 'double' to 'float'
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Window.cpp(86): warning C4305: '-=': truncation from 'double' to 'float'
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Window.cpp(89): warning C4305: '+=': truncation from 'double' to 'float'
+  main.cpp
   Generating Code...
   water.vcxproj -> C:\Users\wudis\Documents\graphics\projects\water\water\Debug\water.exe

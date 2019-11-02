@@ -8,7 +8,6 @@ private:
 	std::vector<std::vector<glm::vec3>> vertices; //vertices for the grid
 	int w, l; //w is width of vertices (left to right), l is length of vertices (up to down).
 	float verticesSpace;
-	float t; //time is changing
 	std::vector< glm::vec3> triangles;
 	long trianglesCount = 0;
 	VAO* vao;

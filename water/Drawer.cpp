@@ -17,6 +17,7 @@ Shader* msaaShader;
 
 extern vec3 clearColor;
 extern Window* window;
+float t; //time is changing
 
 vector<RenderObject*> Drawer::renderObjects;
 //vector<Water*> Drawer::renderObjects;
@@ -42,6 +43,8 @@ void Drawer::drawerinit() {
 	//init frameBuffer
 	fbo = new FrameBuffer(window->width, window->height);
 
+	t = glfwGetTime(); //time is changing
+
 	//init render objects
 	Water::geometry = false;
 	renderObjects.push_back(new Water(600, 600, 0.3f));
@@ -52,6 +55,8 @@ void Drawer::drawerinit() {
 
 void logic() {
 	updateDeltaTime();
+
+	t = glfwGetTime();
 
 	//update camera
 	cam->update();

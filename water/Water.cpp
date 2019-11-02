@@ -4,6 +4,7 @@ using namespace std;
 using namespace glm;
 
 bool Water::geometry = true;
+extern float t;
 
 void Water::addTriangles() {
 	triangles.resize((l - 1) * (w - 1) * 6 * 2);
@@ -45,7 +46,7 @@ void Water::waterLogic() {
 	proj = cam->projection;
 
 	//Todo change t to real time simulation
-	t = glfwGetTime();
+	//t = glfwGetTime();
 	//t = 10;
 }
 
