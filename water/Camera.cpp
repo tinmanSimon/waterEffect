@@ -74,8 +74,7 @@ The copyright of mouse_callback goes to Joey de Vries at https://learnopengl.com
 */
 void mouse_callback(GLFWwindow * window, double xpos, double ypos) {
 
-	if (cam->firstMouse)
-	{
+	if (cam->firstMouse) {
 		cam->lastX = xpos;
 		cam->lastY = ypos;
 		cam->firstMouse = false;

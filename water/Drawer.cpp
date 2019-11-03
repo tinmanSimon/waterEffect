@@ -59,7 +59,7 @@ void Drawer::drawerinit() {
 
 	
 	forUp(i, 10) {
-		render_spheres.push_back(new Sphere(vec3(i * 6 - 40, i * 10, i * 6 - 40), 1, 400, 100));
+		render_spheres.push_back(new Sphere(vec3(i * 6 - 30, i * 10 + 10, i * 6 - 30), 1, 400, 100));
 		renderObjects.push_back(render_spheres[i]);
 	}
 	
@@ -78,11 +78,12 @@ bool sphereIsStatic(Sphere* s, GLASSGROUND* g) {
 
 	float diff = abs(sphereOrigin.y - groundAltitude) - s->getRadius();
 
-	//cout << "sphereOrigin.y = " << sphereOrigin.y << ", radius: " << s->getRadius() << ", diff = " << diff << ", velocity length = " << length(s->velocity) << endl;
-	if (abs(diff) <= 0.01f && length(s->velocity) < 0.01f) {
+	if (abs(diff) <= 0.02f && length(s->velocity) < 0.1f) {
 		//cout << "sphereOrigin.y = " << sphereOrigin.y << ", radius: " << s->getRadius() << ", diff = " << diff << ", velocity length = " << length(s->velocity) << endl;
 		return true;
 	}
+	//cout << "sphereOrigin.y = " << sphereOrigin.y << ", radius: " << s->getRadius() << ", diff = " << diff << ", velocity length = " << length(s->velocity) << endl;
+
 	return false;
 
 }
