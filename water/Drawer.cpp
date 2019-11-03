@@ -29,13 +29,17 @@ bool runAnimation = false;
 float threshold = 0.001f;
 float energyConsumptionRate = 0.75f;
 
-Drawer::Drawer()
-{
+FrameBuffer* fbo;
+extern Window* the_window;
+extern vec3 clearColor;
+
+Drawer::Drawer(){
 }
 
 
-Drawer::~Drawer()
-{
+Drawer::~Drawer() {
+	for (auto obj : renderObjects) delete obj;
+	delete fbo;
 }
 
 
@@ -51,23 +55,21 @@ void Drawer::drawerinit() {
 
 	//init water
 	Water::geometry = false;
-	player = new Sphere(vec3(0,100,0), 1, 400, 100);
+	player = new Sphere(vec3(0,20,0), 1, 400, 100);
 	glass = new GLASSGROUND(4.0f, 40.0f);
 	renderObjects.push_back(new Water(600, 600, 0.6f));
 	renderObjects.push_back(new WATERGROUND(-2.0f));
 	renderObjects.push_back(new WATERGROUND(-200.0f));
-
-	
+	/*
 	forUp(i, 10) {
 		render_spheres.push_back(new Sphere(vec3(i * 6 - 30, i * 10 + 10, i * 6 - 30), 1, 400, 100));
 		renderObjects.push_back(render_spheres[i]);
 	}
-	
-
-	
-	
+	*/
 	renderObjects.push_back(player);
 	renderObjects.push_back(glass);
+
+	fbo = new FrameBuffer(the_window->width, the_window->height);
 }
 
 bool sphereIsStatic(Sphere* s, GLASSGROUND* g) {
@@ -128,10 +130,12 @@ void logic() {
 		updateSphere(player);
 		collisionDetect(player, glass);
 
-		forUp(i, 10) {
+		/*
+		forUp(i, render_spheres.size()) {
 			updateSphere(render_spheres[i]);
 			collisionDetect(render_spheres[i], glass);
 		}
+		*/
 	}
 
 	//update camera
@@ -140,7 +144,9 @@ void logic() {
 }
 
 void Drawer::draw() {
+	fbo->useFrameBuffer(clearColor);
 	forUp(i, renderObjects.size()) renderObjects[i]->draw();
+	fbo->changeBackToDefaultBufferAndDraw(clearColor);
 }
 
 void Drawer::freeRenderObjects() {
