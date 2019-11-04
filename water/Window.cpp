@@ -6,6 +6,8 @@ using namespace std;
 glm::vec3 clearColor = glm::vec3(0.529f, 0.808f, 0.922f);
 Window* the_window;
 extern bool runAnimation;
+int gameMode = 0; //0 is third person, 1 is free roam
+extern Sphere* player;
 
 Window::Window(char* window_name, float _width, float _height)
 {
@@ -35,15 +37,31 @@ void processInput(GLFWwindow* window, int key, int scancode, int action, int mod
 		Water::geometry = !Water::geometry;
 	}
 	if (key == GLFW_KEY_K && action == GLFW_PRESS) {
-		//todo flag for gravity animation
 		runAnimation = !runAnimation;
+	}
+
+	if (key == GLFW_KEY_G && action == GLFW_PRESS) {
+		gameMode = 1 - gameMode;
 	}
 
 }
 
 //this processes directly, so it makes movement smooth
 void processMovementInputs(GLFWwindow* window) {
-	if (cam != NULL) {
+
+	if (player != NULL && gameMode == 0) {
+		float cameraSpeed = cam->camProtoSpeed * cam->deltaTime;
+		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+			player->sphere_translate(cameraSpeed * cam->cameraFront);
+		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+			player->sphere_translate(-cameraSpeed * cam->cameraFront);
+		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+			player->sphere_translate(-normalize(cross(cam->cameraFront, cam->cameraUp)) * cameraSpeed);
+		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+			player->sphere_translate(normalize(cross(cam->cameraFront, cam->cameraUp)) * cameraSpeed);
+	}
+
+	else if (cam != NULL && gameMode == 1) {
 		float cameraSpeed = cam->camProtoSpeed * cam->deltaTime;
 		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 			cam->cameraPos += cameraSpeed * cam->cameraFront;
@@ -54,6 +72,9 @@ void processMovementInputs(GLFWwindow* window) {
 		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
 			cam->cameraPos += normalize(cross(cam->cameraFront, cam->cameraUp)) * cameraSpeed;
 	}
+
+	
+	
 	else cout << "cam == NULL!" << endl;
 }
 

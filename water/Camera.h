@@ -44,6 +44,7 @@ public:
 	~Camera();
 
 	void update();
+	void update(glm::vec3 lookAtPoint, float dist = 3.0f);
 };
 
 //this is the camera that is active right now

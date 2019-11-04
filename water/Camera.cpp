@@ -48,6 +48,14 @@ void Camera::update() {
 	//projection = glm::perspective(glm::radians(fov), 7.0f/6.0f, n, f);
 }
 
+void Camera::update(vec3 lookAtPoint, float dist) {
+	vec3 neg_front = normalize(-cameraFront);
+	cameraPos = lookAtPoint + neg_front * dist;
+	view = glm::lookAt(cameraPos, cameraPos + cameraFront, cameraUp);
+	projection = glm::perspective(glm::radians(fov), the_window->width / the_window->height, n, f);
+	//projection = glm::perspective(glm::radians(fov), 7.0f/6.0f, n, f);
+}
+
 //adjust window size
 void framebuffer_size_callback(GLFWwindow * w, int width, int height) {
 	the_window->height = (float)height;

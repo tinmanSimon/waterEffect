@@ -33,6 +33,9 @@ FrameBuffer* fbo;
 extern Window* the_window;
 extern vec3 clearColor;
 
+
+extern int gameMode;
+
 Drawer::Drawer(){
 }
 
@@ -139,7 +142,8 @@ void logic() {
 	}
 
 	//update camera
-	cam->update();
+	if (gameMode == 0) cam->update(player->getWorldPos(), 6);
+	else if (gameMode == 1) cam->update();
 	
 }
 
