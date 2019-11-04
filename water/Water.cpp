@@ -6,6 +6,10 @@ using namespace glm;
 bool Water::geometry = true;
 
 extern float t;
+extern float delta_t;
+extern bool runAnimation;
+float t_diff = 0;
+
 
 void Water::addTriangles() {
 	triangles.resize((l - 1) * (w - 1) * 6 * 2);
@@ -100,7 +104,8 @@ void Water::useShader() {
 	shader->setmat4(model, "model");
 	shader->setmat4(view, "view");
 	shader->setmat4(proj, "projection");
-	shader->setFloat(t, "t");
+	if (runAnimation) t_diff = t_diff + delta_t;
+	shader->setFloat(t_diff, "t");
 
 	//config for frag shader
 	shader->setVec3(0, 0.412, 0.58, "albedo");
@@ -124,8 +129,8 @@ void Water::initShader() {
 	forUp(i, waveSize) {
 		vec2 dirct = vec2(randFloat(-1.0f, 1.0f), randFloat(-1.0f, 1.0f));
 		vec2 direction = vec2(dirct.x + randFloat(-0.4f, 0.4f), dirct.y + randFloat(-0.4f, 0.4f));
-		float A = randFloat(0, 1/(float)waveSize); //waves amplitude
-		float speed = randFloat(0.0f, 0.8f); //waves speed
+		float A = randFloat(0, 2.0/(float)waveSize); //waves amplitude
+		float speed = randFloat(0.0f, 1.2f); //waves speed
 		float wavelength = randFloat(1.0f, 3.0f); 
 		float w = 2 * PI_SIMON / wavelength;
 		float Q = randFloat(0, 1);

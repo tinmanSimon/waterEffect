@@ -58,9 +58,9 @@ void Drawer::drawerinit() {
 
 	//init water
 	Water::geometry = false;
-	player = new Sphere(vec3(0,20,0), 1, 400, 100);
+	player = new Sphere(vec3(0,200,0), 1, 400, 100);
 	glass = new GLASSGROUND(4.0f, 40.0f);
-	renderObjects.push_back(new Water(600, 600, 0.6f));
+	renderObjects.push_back(new Water(600, 600, 0.3f));
 	renderObjects.push_back(new WATERGROUND(-2.0f));
 	renderObjects.push_back(new WATERGROUND(-200.0f));
 	/*
