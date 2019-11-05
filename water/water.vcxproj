@@ -137,6 +137,7 @@
     <ClCompile Include="RenderObject.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="simon_func.cpp" />
+    <ClCompile Include="Source.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="VAO.cpp" />
@@ -166,6 +167,7 @@
     <Text Include="waterDebugFrag.txt" />
     <Text Include="waterFrag.txt" />
     <Text Include="waterFrag2.txt" />
+    <Text Include="waterFrag3.txt" />
     <Text Include="waterGeo.txt" />
     <Text Include="waterGroundFrag.txt" />
     <Text Include="waterGroundVertex.txt" />

@@ -16,7 +16,7 @@ void main()
 
 	vec4 color = texture(texture0, textcoor);
 	vec3 onlyColor = vec3(color);
-	float spec = pow(max(dot(ViewVec, halfVec), 0.0), 5);
+	float spec = pow(max(dot(reflect(-ViewVec,Normal),LightVec), 0.0), 5);
 	vec3 specular = 0.5 * spec * lightColor;
 	onlyColor = onlyColor * specular;
 

@@ -1,4 +1,10 @@
-﻿  Window.cpp
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Window.cpp(88): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Window.cpp(119): warning C4244: 'argument': conversion from 'float' to 'GLsizei', possible loss of data
+﻿  Drawer.cpp
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(57): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(130): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(152): warning C4018: '<': signed/unsigned mismatch
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(157): warning C4018: '<': signed/unsigned mismatch
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(161): warning C4018: '<': signed/unsigned mismatch
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(164): warning C4018: '<': signed/unsigned mismatch
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(167): warning C4018: '<': signed/unsigned mismatch
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(170): warning C4018: '<': signed/unsigned mismatch
   water.vcxproj -> C:\Users\wudis\Documents\graphics\projects\water\water\Debug\water.exe

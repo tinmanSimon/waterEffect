@@ -63,6 +63,9 @@
     <ClCompile Include="FrameBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -137,6 +140,9 @@
       <Filter>Resource Files</Filter>
     </Text>
     <Text Include="frameBufferFrag.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="waterFrag3.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

@@ -123,14 +123,14 @@ void Water::initShader() {
 
 	//init vertex shader
 	string tmp;
-	int waveSize = 30;
+	int waveSize = 20;
 	shader->setInt(waveSize, "waveSize");
 	//vec2 dirct = vec2(randFloat(-1.0f, 1.0f), randFloat(-1.0f, 1.0f));
 	forUp(i, waveSize) {
 		vec2 dirct = vec2(randFloat(-1.0f, 1.0f), randFloat(-1.0f, 1.0f));
 		vec2 direction = vec2(dirct.x + randFloat(-0.4f, 0.4f), dirct.y + randFloat(-0.4f, 0.4f));
-		float A = randFloat(0, 2.0/(float)waveSize); //waves amplitude
-		float speed = randFloat(0.0f, 1.2f); //waves speed
+		float A = randFloat(0, 1.5/(float)waveSize); //waves amplitude
+		float speed = randFloat(0.0f, 0.8f); //waves speed
 		float wavelength = randFloat(1.0f, 3.0f); 
 		float w = 2 * PI_SIMON / wavelength;
 		float Q = randFloat(0, 1);

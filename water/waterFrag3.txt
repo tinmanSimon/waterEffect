@@ -1,0 +1,96 @@
+#version 330 core
+out vec4 FragColor;
+in FRAG_IN {
+ vec3 wNormal;
+  vec3 WorldP;
+} geo_out;
+
+uniform sampler2D normalMap;
+
+// material parameters
+uniform vec3 albedo;
+//vec3 albedo = vec3(0, 0.412, 0.58);
+uniform float metallic;
+uniform float roughness;
+uniform float ao;
+
+// lights
+uniform vec3 lightPosition;
+uniform vec3 lightColor;
+uniform vec3 camPos;
+
+const float PI = 3.14159265359;
+vec3 Normal;
+vec3 WorldPos;
+vec3 ViewVec;
+vec3 LightVec;
+vec3 halfVec;
+float threshold = 0.000000001;
+
+float H(vec3 a, vec3 b){
+	float dotResult = dot(a,b);
+	if(dotResult < 0) return 0;
+	else return dotResult;
+    //return step(0, dot(a,b));
+}
+
+float erfc(float x) {
+	return 2.0 * exp(-x * x) / (2.319 * x + sqrt(4.0 + 1.52 * x * x));
+}
+
+
+float lambda(float vr){
+    return (exp(-vr*vr) - vr * sqrt(PI) * erfc(vr)) / (2*vr*sqrt(PI));
+}
+
+
+vec3 getSkyColor(vec3 e) {
+    e.y = (max(e.y,0.0)*0.8+0.2)*0.8;
+    return vec3(pow(1.0-e.y,2.0), 1.0-e.y, 0.6+(1.0-e.y)*0.4) * 1.1;
+}
+
+void main()
+{		
+	WorldPos = geo_out.WorldP;
+    Normal = geo_out.wNormal;
+    ViewVec = normalize(camPos - WorldPos);
+    LightVec = normalize(lightPosition);
+    halfVec = normalize(ViewVec + LightVec);
+
+	vec3 reflected = getSkyColor(reflect(-ViewVec,Normal));    
+	float diffuse = pow(dot(Normal,LightVec) * 0.4 + 0.6, 80);
+    vec3 refracted = vec3(0.0,0.09,0.18) + diffuse * vec3(0.8,0.9,0.6)*0.6 * 0.12; 
+
+    
+
+    //calculate BRDF
+    float fresnel = clamp(1.0 - dot(Normal,ViewVec), 0.0, 1.0);
+    fresnel = pow(fresnel,3.0) * 0.5;
+	//float fresnel = 0.02 + 0.98 * pow(1.0 - dot(ViewVec, halfVec), 5.0);
+
+    //now actually calculate color
+    vec3 radiance = lightColor;
+    vec3 ambient = 0.8 * vec3(0, 0.467, 0.745);
+    vec3 color = mix(refracted,reflected,fresnel);
+
+	vec3 dist =  WorldPos - camPos;
+	float atten = max(1.0 - dot(dist,dist) * 0.001, 0.0);
+    color += vec3(0.8,0.9,0.6)*0.6 * (WorldPos.y - (-1.0f)) * 0.18 * atten;
+
+	float nrm = (60 + 8.0) / (PI * 8.0);
+    float specular = pow(max(dot(reflect(-ViewVec,Normal),LightVec),0.0),60) * nrm;
+	color += vec3(specular);
+
+	//vec3 dir = -ViewVec;
+	//color = mix(reflected,  color, pow(smoothstep(0.0,-0.02,dir.y),0.2));
+
+    // HDR tonemapping
+    color = color / (color + vec3(1.0));
+    // gamma correct
+    color = pow(color, vec3(1.0/2.2)); 
+
+    FragColor = vec4(color, 1.0);
+
+	//float tmp = max(dot(-ViewVec, Normal), 0);
+	//FragColor = vec4(vec3(1) * tmp, 1);
+}
