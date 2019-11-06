@@ -43,6 +43,11 @@ float lambda(float vr){
     return (exp(-vr*vr) - vr * sqrt(PI) * erfc(vr)) / (2*vr*sqrt(PI));
 }
 
+vec3 getSkyColor(vec3 e) {
+    e.y = (max(e.y,0.0)*0.8+0.2)*0.8;
+    return vec3(pow(1.0-e.y,2.0), 1.0-e.y, 0.6+(1.0-e.y)*0.4) * 1.1;
+}
+
 
 void main()
 {		
@@ -74,13 +79,29 @@ void main()
     float q_vn = min(q_vn_nom / q_vn_denom, 1.0f);
 
     //calculate BRDF
-    float fresnel = 0.02 + 0.98 * pow(1.0 - dot(ViewVec, halfVec), 5.0);
+    //float fresnel = 0.02 + 0.98 * pow(1.0 - dot(ViewVec, halfVec), 5.0);
+	float fresnel = clamp(1.0 - dot(Normal,ViewVec), 0.0, 1.0) - max(dot(LightVec, ViewVec), 0) * 0.5;
+    fresnel = pow(fresnel,3.0) * 0.5;
     float brdf = (q_vn * fresnel) / max((4 * pow(halfVec.y, 3) * cos(thetaL) * dot(ViewVec, halfVec)), 0.01);
+
+	
+    float specular = pow(max(dot(reflect(-ViewVec,Normal),LightVec),0.0),60) * (60 + 8.0) / (PI * 8.0);
+
+	vec3 dist =  WorldPos - camPos;
+	float atten = max(1.0 - dot(dist,dist) * 0.001, 0.0);
 
     //now actually calculate color
     vec3 radiance = lightColor;
     vec3 ambient = 0.8 * vec3(0, 0.467, 0.745);
-    vec3 color = ambient + radiance * brdf;
+	vec3 reflected = getSkyColor(reflect(-ViewVec,Normal));    
+	float diffuse = pow(dot(Normal,LightVec) * 0.4 + 0.6, 80);
+    vec3 refracted = vec3(0.0,0.09,0.18) + diffuse * vec3(0.8,0.9,0.6)*0.6 * 0.12; 
+	vec3 tmp = mix(reflected, refracted, fresnel);
+	ambient = mix(ambient, tmp, fresnel);
+    vec3 color = ambient + radiance * brdf + radiance * specular;
+	color += vec3(0.8,0.9,0.6)*0.6 * (WorldPos.y - (-1.0f)) * 0.18 * atten;
+
+	
 
     // HDR tonemapping
     color = color / (color + vec3(1.0));

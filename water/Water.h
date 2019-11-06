@@ -14,7 +14,7 @@ private:
 	Shader* shader;
 	Shader* testShader;
 	const char* vertex = "waterVertex.txt";
-	const char* frag = "waterFrag3.txt";
+	const char* frag = "waterFrag2.txt";
 	const char* geo = "waterGeo.txt";
 
 	glm::mat4 model, view, proj;

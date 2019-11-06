@@ -60,7 +60,7 @@ void Drawer::drawerinit() {
 	Water::geometry = false;
 	player = new Sphere(vec3(0,300,0), 1, 400, 100);
 	glass = new GLASSGROUND(4.0f, 40.0f);
-	renderObjects.push_back(new Water(600, 600, 0.3f));
+	renderObjects.push_back(new Water(1500, 1500, 0.3f));
 	//renderObjects.push_back(new WATERGROUND(-2.0f));
 	renderObjects.push_back(new WATERGROUND(-200.0f));
 	/*
