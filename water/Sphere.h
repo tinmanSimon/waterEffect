@@ -69,6 +69,7 @@ public:
 	void sphere_translate(glm::vec3 v);
 	glm::vec3 getWorldPos();
 	float getRadius();
+	Texture* getAlbedoTexture();
 };
 
 extern std::vector<Sphere*> spheres;

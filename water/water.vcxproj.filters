@@ -145,5 +145,11 @@
     <Text Include="waterFrag3.txt">
       <Filter>Resource Files</Filter>
     </Text>
+    <Text Include="sphereFrag.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="sphereVertex.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
   </ItemGroup>
 </Project>

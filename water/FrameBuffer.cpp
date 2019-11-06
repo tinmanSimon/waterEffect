@@ -66,6 +66,9 @@ void FrameBuffer::changeBackToDefaultBufferAndDraw(vec3 clearColor) {
 	glClear(GL_COLOR_BUFFER_BIT);
 	shader->use();
 	vao->use();
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, texColorBuffer);
+
 	glDisable(GL_DEPTH_TEST);
 	glBindTexture(GL_TEXTURE_2D, texColorBuffer);
 	glDrawArrays(GL_TRIANGLES, 0, 6);

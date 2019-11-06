@@ -3,6 +3,7 @@ using namespace std;
 using namespace glm;
 
 static mat4 model, view, proj;
+extern Sphere* player;
 
 void GLASSGROUND::addTrianglesToBuffer() {
 	vao->bufferData(&triangles[0], triangles.size() * sizeof(vec3));
@@ -33,6 +34,8 @@ GLASSGROUND::GLASSGROUND(float a, float e) : altitude{ a }, edge{ e } {
 	text = new Texture(text_file_name, "", "", GL_RGBA, 1);
 	addTrianglesToBuffer();
 	triangles.clear();
+
+	albedoMap = new Texture("copper-rock1-alb.png");
 }
 
 GLASSGROUND::~GLASSGROUND() {
@@ -41,7 +44,7 @@ GLASSGROUND::~GLASSGROUND() {
 	delete text;
 }
 
-void useShader(Shader* shader, Texture* text) {
+void GLASSGROUND::useShader(Shader* shader, Texture* text) {
 	model = mat4(1);
 	view = cam->view;
 	proj = cam->projection;
@@ -55,9 +58,16 @@ void useShader(Shader* shader, Texture* text) {
 	shader->setVec3(1, 1, 0, "lightColor");
 	shader->setVec3(cam->cameraPos.x, cam->cameraPos.y, cam->cameraPos.z, "camPos");
 
+	vec3 player_pos = player->getWorldPos();
+	shader->setVec3(player_pos.x, player_pos.y, player_pos.z, "spherePos");
+	shader->setFloat(player->getRadius(), "sphereRadius");
+
 	//for texture
 	shader->setInt(0, "texture0");
+	shader->setInt(1, "albedoMap");
 	text->use(GL_TEXTURE0);
+	albedoMap->use(GL_TEXTURE1);
+	//player->getAlbedoTexture()->use(GL_TEXTURE1);
 }
 
 void GLASSGROUND::draw() {
@@ -66,6 +76,7 @@ void GLASSGROUND::draw() {
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glDrawArrays(GL_TRIANGLES, 0, traingleSize);
+	glDisable(GL_BLEND);
 }
 
 float GLASSGROUND::getAltitude() {

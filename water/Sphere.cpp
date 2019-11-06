@@ -233,3 +233,7 @@ vec3 Sphere::getWorldPos() {
 float Sphere::getRadius() {
 	return radius;
 }
+
+Texture* Sphere::getAlbedoTexture() {
+	return albedoMap;
+}

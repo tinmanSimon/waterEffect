@@ -164,6 +164,8 @@
     <Text Include="frameBufferVertex.txt" />
     <Text Include="glassGroundFrag.txt" />
     <Text Include="glassGroundVertex.txt" />
+    <Text Include="sphereFrag.txt" />
+    <Text Include="sphereVertex.txt" />
     <Text Include="waterDebugFrag.txt" />
     <Text Include="waterFrag.txt" />
     <Text Include="waterFrag2.txt" />

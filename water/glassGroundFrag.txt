@@ -2,10 +2,36 @@
 out vec4 FragColor;
 in vec3 WorldPos;
 in vec2 textcoor;
-uniform sampler2D texture0;
 uniform vec3 lightPosition;
 uniform vec3 lightColor;
 uniform vec3 camPos;
+
+uniform vec3 spherePos;
+uniform float sphereRadius;
+uniform sampler2D texture0;
+uniform sampler2D albedoMap;
+
+float PI = 3.1415926;
+
+vec3 reflected;
+
+vec4 hit(vec3 s_pos, float radius, vec3 viewDir, vec3 N){ //s_pos is the position of sphere
+	float t = -1.0f;
+	vec4 result = vec4(0);
+	vec3 sphere_curpoint = WorldPos - s_pos;
+	float a = dot(reflected, reflected);
+	float b = 2.0f * dot(sphere_curpoint, reflected);
+	float c = dot(sphere_curpoint, sphere_curpoint) - radius * radius;
+	float discriminant = b*b - 4*a*c;
+	if(discriminant >= 0) {
+		t = (-b - sqrt(discriminant)) / (2.0f * a);
+		vec3 hitPoint = WorldPos + t * reflected;
+		vec3 d = normalize(spherePos - hitPoint);
+		vec2 uv = vec2(0.5 + atan(d.x, d.z) / (2 * PI), 0.5 - asin(d.y) / PI);
+		result = texture(albedoMap, uv);
+	}
+	return result;
+}
 
 void main()
 {		
@@ -13,6 +39,7 @@ void main()
     vec3 ViewVec = normalize(camPos - WorldPos);
     vec3 LightVec = normalize(lightPosition);
     vec3 halfVec = normalize(ViewVec + LightVec);
+	reflected = reflect(-ViewVec, Normal);
 
 	vec4 color = texture(texture0, textcoor);
 	vec3 onlyColor = vec3(color);
@@ -21,4 +48,7 @@ void main()
 	onlyColor = onlyColor * specular;
 
 	FragColor = vec4(onlyColor, color.w);
+
+	vec4 result = hit(spherePos, sphereRadius, ViewVec, Normal);
+	if(length(result) > 0) FragColor = mix(result, FragColor, 0.5);
 }
