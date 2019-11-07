@@ -27,6 +27,14 @@ vec3 LightVec;
 vec3 halfVec;
 float threshold = 0.000000001;
 
+vec3 addNoise(vec3 N){
+	float div = 10.0f;
+	float noisex = fract(cos(dot(N ,vec3(24.216547, 56.4578, 98.2465))) * 73569.4124) / div;
+	float noisey = fract(cos(dot(N ,vec3(24.216547, 56.4578, 98.2465))) * 73569.4124) / div;
+	float noisez = fract(cos(dot(N ,vec3(24.216547, 56.4578, 98.2465))) * 73569.4124) / div;
+    return normalize(N + vec3(noisex, noisey, noisez));
+}
+
 float H(vec3 a, vec3 b){
 	float dotResult = dot(a,b);
 	if(dotResult < 0) return 0;
@@ -79,9 +87,10 @@ void main()
     float q_vn = min(q_vn_nom / q_vn_denom, 1.0f);
 
     //calculate BRDF
-    //float fresnel = 0.02 + 0.98 * pow(1.0 - dot(ViewVec, halfVec), 5.0);
-	float fresnel = clamp(1.0 - dot(Normal,ViewVec), 0.0, 1.0) - max(dot(LightVec, ViewVec), 0) * 0.5;
-    fresnel = pow(fresnel,3.0) * 0.5;
+    float fresnel1 = 0.02 + 0.98 * pow(1.0 - dot(ViewVec, halfVec), 5.0);
+	float fresnel2 = clamp(1.0 - dot(Normal,ViewVec), 0.0, 1.0) - max(dot(LightVec, ViewVec), 0) * 0.5;
+    fresnel2 = pow(fresnel2,3.0) * 0.5;
+	float fresnel = mix(fresnel1, fresnel2, 0.4);
     float brdf = (q_vn * fresnel) / max((4 * pow(halfVec.y, 3) * cos(thetaL) * dot(ViewVec, halfVec)), 0.01);
 
 	
@@ -92,7 +101,7 @@ void main()
 
     //now actually calculate color
     vec3 radiance = lightColor;
-    vec3 ambient = 0.8 * vec3(0, 0.467, 0.745);
+    vec3 ambient = 0.8 * vec3(0, 0.467, 0.745); 
 	vec3 reflected = getSkyColor(reflect(-ViewVec,Normal));    
 	float diffuse = pow(dot(Normal,LightVec) * 0.4 + 0.6, 80);
     vec3 refracted = vec3(0.0,0.09,0.18) + diffuse * vec3(0.8,0.9,0.6)*0.6 * 0.12; 

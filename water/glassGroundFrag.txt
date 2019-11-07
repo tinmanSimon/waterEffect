@@ -16,6 +16,7 @@ float PI = 3.1415926;
 vec3 reflected;
 
 vec4 hit(vec3 s_pos, float radius, vec3 viewDir, vec3 N){ //s_pos is the position of sphere
+	if(camPos.y < WorldPos.y) return vec4(0);
 	float t = -1.0f;
 	vec4 result = vec4(0);
 	vec3 sphere_curpoint = WorldPos - s_pos;
@@ -27,7 +28,7 @@ vec4 hit(vec3 s_pos, float radius, vec3 viewDir, vec3 N){ //s_pos is the positio
 		t = (-b - sqrt(discriminant)) / (2.0f * a);
 		vec3 hitPoint = WorldPos + t * reflected;
 		vec3 d = normalize(spherePos - hitPoint);
-		vec2 uv = vec2(0.5 + atan(d.x, d.z) / (2 * PI), 0.5 - asin(d.y) / PI);
+		vec2 uv = vec2(0.5 + atan(d.z, d.x) / (2 * PI), 0.5 - asin(d.y) / PI);
 		result = texture(albedoMap, uv);
 	}
 	return result;

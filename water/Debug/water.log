@@ -1,10 +1,10 @@
-﻿  Drawer.cpp
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(57): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(130): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(152): warning C4018: '<': signed/unsigned mismatch
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(157): warning C4018: '<': signed/unsigned mismatch
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(161): warning C4018: '<': signed/unsigned mismatch
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(164): warning C4018: '<': signed/unsigned mismatch
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(167): warning C4018: '<': signed/unsigned mismatch
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(170): warning C4018: '<': signed/unsigned mismatch
-  water.vcxproj -> C:\Users\wudis\Documents\graphics\projects\water\water\Debug\water.exe
+﻿  Water.cpp
+C:\Users\wudis\Documents\graphics\projects\water\backup\waterBackup1\water\Water.cpp(17): warning C4018: '<': signed/unsigned mismatch
+C:\Users\wudis\Documents\graphics\projects\water\backup\waterBackup1\water\Water.cpp(18): warning C4018: '<': signed/unsigned mismatch
+C:\Users\wudis\Documents\graphics\projects\water\backup\waterBackup1\water\Water.cpp(90): warning C4018: '<': signed/unsigned mismatch
+C:\Users\wudis\Documents\graphics\projects\water\backup\waterBackup1\water\Water.cpp(111): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\wudis\Documents\graphics\projects\water\backup\waterBackup1\water\Water.cpp(115): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Users\wudis\Documents\graphics\projects\water\backup\waterBackup1\water\Water.cpp(132): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+C:\Users\wudis\Documents\graphics\projects\water\backup\waterBackup1\water\Water.cpp(135): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\wudis\Documents\graphics\projects\water\backup\waterBackup1\water\Water.cpp(137): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+  water.vcxproj -> C:\Users\wudis\Documents\graphics\projects\water\backup\waterBackup1\Debug\water.exe
