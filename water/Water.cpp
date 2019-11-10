@@ -8,8 +8,11 @@ bool Water::geometry = true;
 extern float t;
 extern float delta_t;
 extern bool runAnimation;
+extern vec3 sunLightDir;
 float t_diff = 0;
-
+extern mat4 lightSpaceMatrix;
+extern mat4 lightProjection;
+extern mat4 lightView;
 
 void Water::addTriangles() {
 	triangles.resize((l - 1) * (w - 1) * 6 * 2);
@@ -112,9 +115,12 @@ void Water::useShader() {
 	shader->setFloat(0.5, "metallic");
 	shader->setFloat(0.5, "roughness");
 	shader->setFloat(0.5, "ao");
-	shader->setVec3(0, 0.5, 0.8, "lightPosition");
+	shader->setVec3(sunLightDir.x, sunLightDir.y, sunLightDir.z, "lightPosition");
 	shader->setVec3(1, 1, 0, "lightColor");
 	shader->setVec3(cam->cameraPos.x, cam->cameraPos.y, cam->cameraPos.z, "camPos");
+
+	shader->setInt(10, "shadowMap"); //10 is for shadow map only
+	shader->setmat4(lightSpaceMatrix, "lightSpaceMatrix");
 }
 
 void Water::initShader() {
@@ -123,7 +129,7 @@ void Water::initShader() {
 
 	//init vertex shader
 	string tmp;
-	int waveSize = 40;
+	int waveSize = 30;
 	shader->setInt(waveSize, "waveSize");
 	//vec2 dirct = vec2(randFloat(-1.0f, 1.0f), randFloat(-1.0f, 1.0f));
 	forUp(i, waveSize) {
@@ -166,6 +172,18 @@ void Water::draw() {
 	useShader();
 	//useTextures();
 	if(geometry) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	glDrawArrays(GL_TRIANGLES, 0, trianglesCount);
+}
+
+void Water::drawShadow(Shader* s) {
+	waterLogic();
+	vao->use();
+	useShader();
+	shader->setmat4(lightView, "view");
+	shader->setmat4(lightProjection, "projection");
+	//useTextures();
+	if (geometry) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	glDrawArrays(GL_TRIANGLES, 0, trianglesCount);
 }

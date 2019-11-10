@@ -11,6 +11,7 @@
 #include "WaterGround.h"
 #include "GlassGround.h"
 #include "FrameBuffer.h"
+#include "Shadow.h"
 
 extern bool pause;
 extern int skyboxes;

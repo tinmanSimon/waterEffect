@@ -13,6 +13,7 @@
 #include "Texture.h"
 
 class Sphere : public RenderObject {
+	int ID;
 	glm::vec3 pos;
 	float radius;
 	int slices, layers;
@@ -36,6 +37,7 @@ class Sphere : public RenderObject {
 
 
 public:
+	static int ID_count;
 	//Sphere();
 	Sphere(glm::vec3 position, float r, int sli, int lay);
 	~Sphere();
@@ -51,6 +53,7 @@ public:
 	//drawType == 1 then it's points, 3 then it's lines, 2 then it's triangles
 	void draw(int drawType);
 	void draw();
+	void drawShadow(Shader* s); //means use s to render not using the default water shader
 	void update(glm::mat4 m);
 
 	std::vector<glm::vec3> points;

@@ -33,6 +33,10 @@ FrameBuffer* fbo;
 extern Window* the_window;
 extern vec3 clearColor;
 
+Shadow* shadowmap;
+
+int Sphere::ID_count;
+
 
 extern int gameMode;
 
@@ -43,6 +47,7 @@ Drawer::Drawer(){
 Drawer::~Drawer() {
 	for (auto obj : renderObjects) delete obj;
 	delete fbo;
+	delete shadowmap;
 }
 
 
@@ -58,21 +63,27 @@ void Drawer::drawerinit() {
 
 	//init water
 	Water::geometry = false;
-	player = new Sphere(vec3(0,10,0), 1, 400, 100);
 	glass = new GLASSGROUND(4.0f, 40.0f);
-	renderObjects.push_back(new Water(1000, 1000, 0.3f));
+	renderObjects.push_back(new Water(600, 600, 0.3f));
 	//renderObjects.push_back(new WATERGROUND(-2.0f));
 	//renderObjects.push_back(new WATERGROUND(-200.0f));
-	/*
-	forUp(i, 10) {
-		render_spheres.push_back(new Sphere(vec3(i * 6 - 30, i * 10 + 10, i * 6 - 30), 1, 400, 100));
-		renderObjects.push_back(render_spheres[i]);
-	}
-	*/
+
+	//init spheres
+	Sphere::ID_count = 0;
+
+	player = new Sphere(vec3(0, 10, 0), 1, 400, 100);
 	renderObjects.push_back(player);
+	render_spheres.push_back(player);
+	forUp(i, 1) {
+		Sphere* tmp = new Sphere(vec3(i * 6 - 30, i * 10 + 10, i * 6 - 30), 1, 400, 100);
+		render_spheres.push_back(tmp);
+		renderObjects.push_back(tmp);
+	}
+
 	renderObjects.push_back(glass);
 
 	fbo = new FrameBuffer(the_window->width, the_window->height);
+	shadowmap = new Shadow(1024, 1024);
 }
 
 bool sphereIsStatic(Sphere* s, GLASSGROUND* g) {
@@ -133,12 +144,12 @@ void logic() {
 		updateSphere(player);
 		collisionDetect(player, glass);
 
-		/*
+		
 		forUp(i, render_spheres.size()) {
 			updateSphere(render_spheres[i]);
 			collisionDetect(render_spheres[i], glass);
 		}
-		*/
+		
 	}
 
 	//update camera
@@ -148,6 +159,10 @@ void logic() {
 }
 
 void Drawer::draw() {
+	//shadowmap->use();
+	//forUp(i, renderObjects.size()) renderObjects[i]->drawShadow(shadowmap->getShader());
+	//shadowmap->changeBack();
+
 	fbo->useFrameBuffer(clearColor);
 	forUp(i, renderObjects.size()) renderObjects[i]->draw();
 	fbo->changeBackToDefaultBufferAndDraw(clearColor);

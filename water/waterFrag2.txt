@@ -1,11 +1,13 @@
 #version 330 core
 out vec4 FragColor;
 in FRAG_IN {
- vec3 wNormal;
+  vec3 wNormal;
   vec3 WorldP;
+  vec4 fragLightSpacePos;
 } geo_out;
 
 uniform sampler2D normalMap;
+uniform sampler2D shadowMap;
 
 // material parameters
 uniform vec3 albedo;
@@ -25,6 +27,7 @@ vec3 WorldPos;
 vec3 ViewVec;
 vec3 LightVec;
 vec3 halfVec;
+vec4 fragLightSpacePos;
 float threshold = 0.000000001;
 
 vec3 addNoise(vec3 N){
@@ -56,6 +59,14 @@ vec3 getSkyColor(vec3 e) {
     return vec3(pow(1.0-e.y,2.0), 1.0-e.y, 0.6+(1.0-e.y)*0.4) * 1.1;
 }
 
+float calShadow(){
+    vec3 projCoords = fragLightSpacePos.xyz / fragLightSpacePos.w;
+    projCoords = projCoords * 0.5 + 0.5;
+    float closestDepth = texture(shadowMap, projCoords.xy).r; 
+    float currentDepth = projCoords.z;
+    float shadow = currentDepth > closestDepth  ? 1.0 : 0.0;
+    return shadow;
+}
 
 void main()
 {		
@@ -64,6 +75,7 @@ void main()
     ViewVec = normalize(camPos - WorldPos);
     LightVec = normalize(lightPosition);
     halfVec = normalize(ViewVec + LightVec);
+	fragLightSpacePos = geo_out.fragLightSpacePos;
     float thetaL = acos(LightVec.y);
     float phiL = atan(LightVec.z, LightVec.x);
     float thetaV = acos(ViewVec.y);
@@ -110,14 +122,14 @@ void main()
     vec3 color = ambient + radiance * brdf + radiance * specular;
 	color += vec3(0.8,0.9,0.6)*0.6 * (WorldPos.y - (-1.0f)) * 0.18 * atten;
 
-	
-
     // HDR tonemapping
     color = color / (color + vec3(1.0));
     // gamma correct
     color = pow(color, vec3(1.0/2.2)); 
 
     FragColor = vec4(color, 1.0);
+
+	//if(calShadow() > 0) FragColor = vec4(1, 0, 0, 1);
 
 	//float tmp = max(dot(ViewVec, Normal), 0);
 	//FragColor = vec4(vec3(1) * tmp, 1);

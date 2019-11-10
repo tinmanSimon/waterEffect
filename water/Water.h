@@ -2,6 +2,7 @@
 #define WATER_H
 #include "Camera.h"
 #include "RenderObject.h"
+#include "Shader.h"
 class Water : public RenderObject
 {
 private:
@@ -11,7 +12,7 @@ private:
 	std::vector< glm::vec3> triangles;
 	long trianglesCount = 0;
 	VAO* vao;
-	Shader* shader;
+	Shader* shader, shadowShader;
 	Shader* testShader;
 	const char* vertex = "waterVertex.txt";
 	const char* frag = "waterFrag2.txt";
@@ -37,6 +38,7 @@ public:
 	Water(int w, int l, float s = 0.5f);
 	~Water();
 	void draw();
+	void drawShadow(Shader* s); //means use s to render not using the default water shader
 	static bool geometry;
 };
 

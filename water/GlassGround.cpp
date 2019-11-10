@@ -4,6 +4,8 @@ using namespace glm;
 
 static mat4 model, view, proj;
 extern Sphere* player;
+extern vector<Sphere*> render_spheres;
+extern vec3 sunLightDir;
 
 void GLASSGROUND::addTrianglesToBuffer() {
 	vao->bufferData(&triangles[0], triangles.size() * sizeof(vec3));
@@ -54,17 +56,27 @@ void GLASSGROUND::useShader(Shader* shader, Texture* text) {
 	shader->setmat4(view, "view");
 	shader->setmat4(proj, "projection");
 
-	shader->setVec3(0, 0.5, 0.8, "lightPosition");
+	shader->setVec3(sunLightDir.x, sunLightDir.y, sunLightDir.z, "lightPosition");
 	shader->setVec3(1, 1, 0, "lightColor");
 	shader->setVec3(cam->cameraPos.x, cam->cameraPos.y, cam->cameraPos.z, "camPos");
 
-	vec3 player_pos = player->getWorldPos();
-	shader->setVec3(player_pos.x, player_pos.y, player_pos.z, "spherePos");
-	shader->setFloat(player->getRadius(), "sphereRadius");
+	//vec3 player_pos = player->getWorldPos();
+	//shader->setVec3(player_pos.x, player_pos.y, player_pos.z, "spherePos");
+	//shader->setFloat(player->getRadius(), "sphereRadius");
+
+	shader->setInt(render_spheres.size(), "spheres.size");
+	forUp(i, render_spheres.size()) {
+		Sphere* curSphere = render_spheres[i];
+		string tmp = "spheres.sphere_pos[" + to_string(i) + "]";
+		shader->setVec3(curSphere->getWorldPos(), tmp.c_str());
+		tmp = "spheres.sphere_Radius[" + to_string(i) + "]";
+		shader->setFloat(curSphere->getRadius(), tmp.c_str());
+	}
 
 	//for texture
 	shader->setInt(0, "texture0");
 	shader->setInt(1, "albedoMap");
+	shader->setInt(10, "shadowMap"); //10 is for shadow map only
 	text->use(GL_TEXTURE0);
 	albedoMap->use(GL_TEXTURE1);
 	//player->getAlbedoTexture()->use(GL_TEXTURE1);
@@ -79,6 +91,17 @@ void GLASSGROUND::draw() {
 	glDisable(GL_BLEND);
 }
 
+void GLASSGROUND::drawShadow(Shader* s) {
+	vao->use();
+	s->setmat4(model, "model");
+	s->use();
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glDrawArrays(GL_TRIANGLES, 0, traingleSize);
+	glDisable(GL_BLEND);
+}
+
 float GLASSGROUND::getAltitude() {
 	return altitude;
 }
@@ -86,3 +109,4 @@ float GLASSGROUND::getAltitude() {
 float GLASSGROUND::getEdge() {
 	return edge;
 }
+

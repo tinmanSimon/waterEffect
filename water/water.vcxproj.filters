@@ -66,6 +66,12 @@
     <ClCompile Include="Source.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="Shadow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -102,6 +108,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FrameBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shadow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -149,6 +161,12 @@
       <Filter>Resource Files</Filter>
     </Text>
     <Text Include="sphereVertex.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="depthVertex.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="depthFrag.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

@@ -4,6 +4,7 @@ using namespace glm;
 
 const float edge = 10000;
 mat4 model, view, proj;
+extern vec3 sunLightDir;
 
 void WATERGROUND::addTrianglesToBuffer() {
 	vao->bufferData(&triangles[0], triangles.size() * sizeof(vec3));
@@ -44,13 +45,22 @@ void useShader(Shader* shader) {
 	shader->setmat4(view, "view");
 	shader->setmat4(proj, "projection");
 
-	shader->setVec3(0, 0.5, 0.8, "lightPosition");
+	shader->setVec3(sunLightDir.x, sunLightDir.y, sunLightDir.z, "lightPosition");
 	shader->setVec3(1, 1, 0, "lightColor");
 	shader->setVec3(cam->cameraPos.x, cam->cameraPos.y, cam->cameraPos.z, "camPos");
+
+	shader->setInt(10, "shadowMap"); //10 is for shadow map only
 }
 
 void WATERGROUND::draw() {
 	vao->use();
 	useShader(shader);
+	glDrawArrays(GL_TRIANGLES, 0, traingleSize);
+}
+
+void WATERGROUND::drawShadow(Shader* s){
+	vao->use();
+	s->setmat4(model, "model");
+	s->use();
 	glDrawArrays(GL_TRIANGLES, 0, traingleSize);
 }

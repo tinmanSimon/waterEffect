@@ -7,6 +7,5 @@ RenderObject::RenderObject()
 }
 
 
-RenderObject::~RenderObject()
-{
+RenderObject::~RenderObject(){
 }

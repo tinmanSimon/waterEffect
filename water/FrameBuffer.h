@@ -1,4 +1,6 @@
-#pragma once
+#ifndef FRAMEBUFFER_H
+#define FRAMEBUFFER_H
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
@@ -27,3 +29,4 @@ public:
 	void changeBackToDefaultBufferAndDraw(glm::vec3 clearColor = glm::vec3(1, 1, 1));
 };
 
+#endif

@@ -1,8 +1,9 @@
 #version 330 core
 out vec4 FragColor;
 in FRAG_IN {
- vec3 wNormal;
+  vec3 wNormal;
   vec3 WorldP;
+  vec4 fragLightSpacePos;
 } geo_out;
 
 uniform sampler2D normalMap;

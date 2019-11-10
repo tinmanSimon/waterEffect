@@ -5,6 +5,7 @@ using namespace std;
 using namespace glm;
 
 std::vector<Sphere*> spheres;
+extern vec3 sunLightDir;
 
 /*
 Sphere::Sphere()
@@ -14,7 +15,10 @@ Sphere::Sphere()
 
 static float PI_S = 3.1415926;
 
-Sphere::Sphere(glm::vec3 position, float r, int sli, int lay) : pos{ vec3(0,0,0) }, radius{ r }, slices{ sli }, layers{ lay }, velocity{vec3(0)} {
+extern vector<Sphere*> render_spheres;
+
+Sphere::Sphere(glm::vec3 position, float r, int sli, int lay) : ID { Sphere::ID_count++ }, pos { vec3(0, 0, 0) }, radius{ r }, slices{ sli }, layers{ lay }, velocity{ vec3(0) } {
+
 	//Step 1, generate all the points.
 	//init points
 	int pointCount = 0;
@@ -163,6 +167,20 @@ void Sphere::useShader(){
 	shader->setmat4(view, "view");
 	shader->setmat4(proj, "projection");
 	shader->setVec3(cam->cameraPos.x, cam->cameraPos.y, cam->cameraPos.z, "camPos");
+	shader->setVec3(sunLightDir.x, sunLightDir.y, sunLightDir.z, "lightPosition");
+
+	shader->setInt(10, "shadowMap"); //10 is for shadow map only
+
+	shader->setInt(render_spheres.size(), "spheres.size");
+	forUp(i, render_spheres.size()) {
+		Sphere* curSphere = render_spheres[i];
+		string tmp = "spheres.sphere_pos[" + to_string(i) + "]";
+		shader->setVec3(curSphere->getWorldPos(), tmp.c_str());
+		tmp = "spheres.sphere_Radius[" + to_string(i) + "]";
+		shader->setFloat(curSphere->getRadius(), tmp.c_str());
+	}
+	//cout << "ID:" << ID << endl;
+	shader->setInt(ID, "ID");
 }
 
 void Sphere::draw(int drawType) {
@@ -180,6 +198,23 @@ void Sphere::draw(int drawType) {
 	if (drawType == 1) glDrawArrays(GL_POINTS, 0, points.size());
 	else if(drawType == 2) glDrawElements(GL_TRIANGLES, 3*triangleIndiciesSize, GL_UNSIGNED_INT, 0);
 }
+
+void Sphere::drawShadow(Shader* s) {
+	if (vao == NULL) {
+		cout << "ERROR! vao is null but sphere tries to draw!" << endl;
+		return;
+	}
+	else if (shader == NULL) {
+		cout << "ERROR! shader is null but sphere tries to draw! Assign sphere's shader!" << endl;
+		return;
+	}
+	vao->use();
+	s->setmat4(model, "model");
+	s->use();
+	useTextures();
+	glDrawElements(GL_TRIANGLES, 3 * triangleIndiciesSize, GL_UNSIGNED_INT, 0);
+}
+
 
 void Sphere::draw(){
 	draw(2);

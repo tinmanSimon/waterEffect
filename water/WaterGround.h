@@ -21,6 +21,7 @@ public:
 	WATERGROUND();
 	~WATERGROUND();
 	void draw();
+	void drawShadow(Shader* s); //means use s to render not using the default water shader
 };
 
 #endif

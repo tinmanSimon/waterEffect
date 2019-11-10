@@ -133,9 +133,11 @@
     <ClCompile Include="FrameBuffer.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="GlassGround.cpp" />
+    <ClCompile Include="Light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RenderObject.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="Shadow.cpp" />
     <ClCompile Include="simon_func.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Sphere.cpp" />
@@ -150,8 +152,10 @@
     <ClInclude Include="Drawer.h" />
     <ClInclude Include="FrameBuffer.h" />
     <ClInclude Include="GlassGround.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="RenderObject.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="Shadow.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="VAO.h" />
@@ -160,6 +164,8 @@
     <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="depthFrag.txt" />
+    <Text Include="depthVertex.txt" />
     <Text Include="frameBufferFrag.txt" />
     <Text Include="frameBufferVertex.txt" />
     <Text Include="glassGroundFrag.txt" />

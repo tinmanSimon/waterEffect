@@ -5,9 +5,11 @@ uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
 uniform float t;
+uniform mat4 lightSpaceMatrix;
 out FRAG_IN {
 	vec3 wNormal;
 	vec3 WorldP;
+	vec4 fragLightSpacePos;
 } frag_in;
 
 uniform int waveSize;
@@ -49,5 +51,6 @@ void main()
 	vec4 w = model * vec4(calPos(), 1.0f);
 	frag_in.WorldP = vec3(w);
 	frag_in.wNormal = normalize(calNormal());
+	frag_in.fragLightSpacePos = lightSpaceMatrix * w;
     gl_Position =  projection * view * w;
 }  

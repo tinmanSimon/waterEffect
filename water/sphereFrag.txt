@@ -13,8 +13,15 @@ uniform sampler2D aoMap;
 uniform vec3 lightPosition;
 uniform vec3 lightColor;
 uniform vec3 camPos;
+uniform int ID;
 
 const float PI = 3.14159265359;
+
+uniform struct render_spheres {
+  vec3 sphere_pos[100];
+  float sphere_Radius[100];
+  int size;
+} spheres;
 
 vec3 getNormalFromMap()
 {
@@ -73,6 +80,23 @@ vec3 fresnelSchlick(float cosTheta, vec3 F0)
     return F0 + (1.0 - F0) * pow(1.0 - cosTheta, 5.0);
 }
 
+float calShadow(vec3 s_pos, float radius, vec3 lightDir){
+	float t = -1.0f;
+	float result = 0.0f;
+	vec3 sphere_curpoint = WorldPos - s_pos;
+	float a = dot(lightDir, lightDir);
+	float b = 2.0f * dot(sphere_curpoint, lightDir);
+	float c = dot(sphere_curpoint, sphere_curpoint) - radius * radius;
+	float discriminant = b*b - 4*a*c;
+	if(discriminant >= 0) {
+		t = (-b - sqrt(discriminant)) / (2.0f * a);
+		if(t < 0) t = (-b + sqrt(discriminant)) / (2.0f * a);
+		if(t < 0) return 0.0f;
+		result = 1.0f;
+	}
+	return result;
+}
+
 void main()
 {		
 	vec3 albedo     = pow(texture(albedoMap, frag_uv).rgb, vec3(2.2));
@@ -87,7 +111,7 @@ void main()
 	vec3 F0 = vec3(0.04); 
     F0 = mix(F0, albedo, metallic);
 
-	vec3 L = normalize(vec3(0, 0.5, -0.5));
+	vec3 L = normalize(lightPosition);
     vec3 H = normalize(V + L);
     vec3 radiance = vec3(5);
 
@@ -116,7 +140,20 @@ void main()
 	vec3 color = (kD * albedo / PI + specular) * radiance * NdotL;
 
 	vec3 ambient = vec3(1) * albedo * ao;
-	color += ambient;
+	//color += ambient;
+
+	float weDontHaveShadow = 1.0f;
+	
+	for(int i = 0; i < spheres.size; ++i) {
+		if(i == ID) continue;
+		float inShadow = 0;
+		inShadow = calShadow(spheres.sphere_pos[i], spheres.sphere_Radius[i], L);
+		if(inShadow > 0) {
+			weDontHaveShadow = 0;
+		}
+	}
+	
+	color = weDontHaveShadow * color + ambient;
 
 	color = color / (color + vec3(1.0));
     // gamma correct
