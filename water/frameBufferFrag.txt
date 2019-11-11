@@ -16,5 +16,5 @@ void main() {
 	c = c / 400.0f;
 
 
-	FragColor = vec4(c, c, c, 1.0);
+	FragColor = vec4(vec3(FragColor) * (1 - c) + c * vec3(1), 1.0);
 }
