@@ -2,9 +2,19 @@
 out vec4 FragColor;
 in vec2 frag_textCoor;
 uniform sampler2D texture0;
+uniform sampler2D depthBuffer;
 
 void main() { 
     FragColor = texture(texture0, frag_textCoor);
 	//float average = (FragColor.r + FragColor.g + FragColor.b) / 3.0f;
     //FragColor = vec4(average, average, average, 1.0);
+
+	float a = texture2D(depthBuffer, frag_textCoor).x;
+
+	float b = 2.0 * a - 1.0;
+    float c = 2.0 * 1 * 400 / (400 + 1 - b * (400 - 1));
+	c = c / 400.0f;
+
+
+	FragColor = vec4(c, c, c, 1.0);
 }

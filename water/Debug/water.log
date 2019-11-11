@@ -8,10 +8,4 @@ C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(176): wa
 C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(179): warning C4018: '<': signed/unsigned mismatch
 C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(182): warning C4018: '<': signed/unsigned mismatch
 C:\Users\wudis\Documents\graphics\projects\water\water\water\Drawer.cpp(185): warning C4018: '<': signed/unsigned mismatch
-  Sphere.cpp
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Sphere.cpp(16): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Sphere.cpp(38): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Sphere.cpp(175): warning C4018: '<': signed/unsigned mismatch
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Sphere.cpp(230): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-  Generating Code...
   water.vcxproj -> C:\Users\wudis\Documents\graphics\projects\water\water\Debug\water.exe

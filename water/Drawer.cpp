@@ -64,7 +64,7 @@ void Drawer::drawerinit() {
 	//init water
 	Water::geometry = false;
 	glass = new GLASSGROUND(4.0f, 40.0f);
-	renderObjects.push_back(new Water(600, 600, 0.3f));
+	renderObjects.push_back(new Water(2000, 2000, 0.3f));
 	//renderObjects.push_back(new WATERGROUND(-2.0f));
 	//renderObjects.push_back(new WATERGROUND(-200.0f));
 

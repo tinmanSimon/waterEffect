@@ -13,6 +13,8 @@ private:
 	unsigned int framebuffer;
 	unsigned int texColorBuffer;
 	unsigned int rbo;
+	unsigned int depthBuffer;
+	unsigned int stencil;
 	float width, height;
 
 	const char* vertex = "frameBufferVertex.txt";
