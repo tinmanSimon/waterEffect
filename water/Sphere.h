@@ -16,6 +16,7 @@ class Sphere : public RenderObject {
 	int ID;
 	glm::vec3 pos;
 	float radius;
+	float mass;
 	int slices, layers;
 
 	VAO* vao = NULL;
@@ -39,7 +40,7 @@ class Sphere : public RenderObject {
 public:
 	static int ID_count;
 	//Sphere();
-	Sphere(glm::vec3 position, float r, int sli, int lay);
+	Sphere(glm::vec3 position, float r, int sli, int lay, float m = 1.0f);
 	~Sphere();
 
 	//can create vao for itself, or it can be added by outside

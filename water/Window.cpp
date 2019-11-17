@@ -8,6 +8,12 @@ Window* the_window;
 extern bool runAnimation;
 int gameMode = 0; //0 is third person, 1 is free roam
 extern Sphere* player;
+extern GLASSGROUND* glass;
+extern float time_speed;
+extern float max_velocity;
+extern float velocity_step;
+extern bool jump;
+extern float velocity_dash;
 
 Window::Window(char* window_name, float _width, float _height)
 {
@@ -44,23 +50,61 @@ void processInput(GLFWwindow* window, int key, int scancode, int action, int mod
 		gameMode = 1 - gameMode;
 	}
 
+	if (key == GLFW_KEY_UP && action == GLFW_PRESS) {
+		time_speed += 1.0f;
+	}
+
+	if (key == GLFW_KEY_DOWN && action == GLFW_PRESS) {
+		if(time_speed > 1.0f) time_speed -= 1.0f;
+	}
+	 
+	if (gameMode == 0 && key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
+		float player_altitude = player->getWorldPos().y;
+		float glass_altitude = glass->getAltitude();
+		if (player_altitude > glass_altitude && (player_altitude < glass_altitude + player->getRadius() * 2 + 1)) {
+			jump = true;
+		}
+	}
+
+	if (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_PRESS) {
+		if (player != NULL && gameMode == 0) {
+			player->velocity += velocity_dash * normalize(cam->cameraFront);
+		}
+	}
 }
 
 //this processes directly, so it makes movement smooth
 void processMovementInputs(GLFWwindow* window) {
 
+	//original gameplay mode
 	if (player != NULL && gameMode == 0) {
 		float cameraSpeed = cam->camProtoSpeed * cam->deltaTime;
-		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-			player->sphere_translate(cameraSpeed * cam->cameraFront);
-		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-			player->sphere_translate(-cameraSpeed * cam->cameraFront);
-		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-			player->sphere_translate(-normalize(cross(cam->cameraFront, cam->cameraUp)) * cameraSpeed);
-		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-			player->sphere_translate(normalize(cross(cam->cameraFront, cam->cameraUp)) * cameraSpeed);
+		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+			glm::vec3 horizontal_camfront = glm::normalize(glm::vec3(cam->cameraFront.x, 0, cam->cameraFront.z));
+			float player_proj = glm::dot(player->velocity, horizontal_camfront);
+			if (player_proj <= max_velocity) player->velocity += horizontal_camfront * velocity_step;
+		}
+			
+		if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+			glm::vec3 horizontal_camfront = -glm::normalize(glm::vec3(cam->cameraFront.x, 0, cam->cameraFront.z));
+			float player_proj = glm::dot(player->velocity, horizontal_camfront);
+			if (player_proj <= max_velocity) player->velocity += horizontal_camfront * velocity_step;
+		}
+		if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+			glm::vec3 side = -normalize(cross(cam->cameraFront, cam->cameraUp));
+			glm::vec3 horizontal_camside = glm::normalize(glm::vec3(side.x, 0, side.z));
+			float player_proj = glm::dot(player->velocity, horizontal_camside);
+			if (player_proj <= max_velocity) player->velocity += horizontal_camside * velocity_step;
+		}
+		if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+			glm::vec3 side = normalize(cross(cam->cameraFront, cam->cameraUp));
+			glm::vec3 horizontal_camside = glm::normalize(glm::vec3(side.x, 0, side.z));
+			float player_proj = glm::dot(player->velocity, horizontal_camside);
+			if (player_proj <= max_velocity) player->velocity += horizontal_camside * velocity_step;
+		}
 	}
 
+	//free roaming mode
 	else if (cam != NULL && gameMode == 1) {
 		float cameraSpeed = cam->camProtoSpeed * cam->deltaTime;
 		if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)

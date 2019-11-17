@@ -17,12 +17,14 @@ Shader* msaaShader;
 Sphere* player;
 GLASSGROUND* glass;
 
+bool jump = false;
+
 vector<Sphere*> render_spheres;
 
 vector<RenderObject*> Drawer::renderObjects;
 //vector<Water*> Drawer::renderObjects;
 
-float g_const = 9.8f;
+float g_const = 13.0f;
 float t; //time is changing
 float delta_t;
 bool runAnimation = false;
@@ -39,6 +41,12 @@ int Sphere::ID_count;
 
 
 extern int gameMode;
+
+float time_speed = 1.0f;
+float max_velocity = 10.0f;
+float velocity_step = 0.1f;
+float velocity_dash = 10.0f;
+vec3 jump_velocity = vec3(0, 7, 0);
 
 Drawer::Drawer(){
 }
@@ -64,18 +72,18 @@ void Drawer::drawerinit() {
 	//init water
 	Water::geometry = false;
 	glass = new GLASSGROUND(4.0f, 40.0f);
-	renderObjects.push_back(new Water(2000, 2000, 0.3f));
+	renderObjects.push_back(new Water(1000, 1000, 0.3f));
 	//renderObjects.push_back(new WATERGROUND(-2.0f));
 	//renderObjects.push_back(new WATERGROUND(-200.0f));
 
 	//init spheres
 	Sphere::ID_count = 0;
 
-	player = new Sphere(vec3(0, 10, 0), 1, 400, 100);
+	player = new Sphere(vec3(-30.5, 20, -30.5), 1, 400, 100);
 	renderObjects.push_back(player);
 	render_spheres.push_back(player);
 	forUp(i, 1) {
-		Sphere* tmp = new Sphere(vec3(i * 6 - 30, i * 10 + 10, i * 6 - 30), 1, 400, 100);
+		Sphere* tmp = new Sphere(vec3(i * 6 - 30, i * 10 + 5, i * 6 - 30), 1, 400, 100);
 		render_spheres.push_back(tmp);
 		renderObjects.push_back(tmp);
 	}
@@ -95,6 +103,7 @@ bool sphereIsStatic(Sphere* s, GLASSGROUND* g) {
 	float diff = abs(sphereOrigin.y - groundAltitude) - s->getRadius();
 
 	if (abs(diff) <= 0.02f && length(s->velocity) < 0.1f) {
+		s->velocity = vec3(0);
 		//cout << "sphereOrigin.y = " << sphereOrigin.y << ", radius: " << s->getRadius() << ", diff = " << diff << ", velocity length = " << length(s->velocity) << endl;
 		return true;
 	}
@@ -111,6 +120,10 @@ void updateSphere(Sphere* s) {
 }
 
 void collisionDetect(Sphere* s, GLASSGROUND* g) {
+	if (jump) {
+		s->velocity += jump_velocity;
+		jump = false;
+	}
 	if (sphereIsStatic(s, g)) return;
 
 	float groundAltitude = g->getAltitude();
@@ -132,6 +145,29 @@ void collisionDetect(Sphere* s, GLASSGROUND* g) {
 
 }
 
+void collisionDetect(Sphere* s1, Sphere* s2) {
+	vec3 s1_Origin = s1->getWorldPos();
+	vec3 s2_Origin = s2->getWorldPos();
+	vec3 dist_vec = normalize(s1_Origin - s2_Origin);
+	float dist = length(s1_Origin - s2_Origin) - (s1->getRadius() + s2->getRadius());
+
+	//if they hit
+	if (dist <= 0) {
+		//slow motion
+		time_speed = 4.0f;
+
+
+		s1->sphere_translate(dist_vec * abs(dist));
+		float s1_velocity = dot(dist_vec, s1->velocity);
+		float s2_velocity = dot(dist_vec, s2->velocity);
+		vec3 s1_horizon_velocity = s1->velocity - s1_velocity * dist_vec;
+		vec3 s2_horizon_velocity = s2->velocity - s2_velocity * dist_vec;
+		s1->velocity = s2_velocity * dist_vec + s1_horizon_velocity;
+		s2->velocity = s1_velocity * dist_vec + s2_horizon_velocity;
+	}
+
+}
+
 
 
 void logic() {
@@ -139,17 +175,15 @@ void logic() {
 
 	delta_t = t;
 	t = glfwGetTime();
-	delta_t = t - delta_t;
+	time_speed = max(time_speed, 1.0f);
+	delta_t = (t - delta_t) / time_speed;
 	if (runAnimation) {
-		updateSphere(player);
-		collisionDetect(player, glass);
-
-		
+		//update spheres
 		forUp(i, render_spheres.size()) {
 			updateSphere(render_spheres[i]);
+			if (i + 1 < render_spheres.size()) collisionDetect(render_spheres[i], render_spheres[i + 1]);
 			collisionDetect(render_spheres[i], glass);
 		}
-		
 	}
 
 	//update camera

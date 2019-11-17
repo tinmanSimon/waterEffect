@@ -17,7 +17,7 @@ static float PI_S = 3.1415926;
 
 extern vector<Sphere*> render_spheres;
 
-Sphere::Sphere(glm::vec3 position, float r, int sli, int lay) : ID { Sphere::ID_count++ }, pos { vec3(0, 0, 0) }, radius{ r }, slices{ sli }, layers{ lay }, velocity{ vec3(0) } {
+Sphere::Sphere(glm::vec3 position, float r, int sli, int lay, float m) : ID{ Sphere::ID_count++ }, pos{ vec3(0, 0, 0) }, radius{ r }, slices{ sli }, layers{ lay }, velocity{ vec3(0) }, mass{ m } {
 
 	//Step 1, generate all the points.
 	//init points

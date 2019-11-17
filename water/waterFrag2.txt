@@ -68,6 +68,19 @@ float calShadow(){
     return shadow;
 }
 
+float DistributionGGX(vec3 N, vec3 H, float roughness) {
+    float a = roughness*roughness;
+    float a2 = a*a;
+    float NdotH = max(dot(N, H), 0.0);
+    float NdotH2 = NdotH*NdotH;
+
+    float nom   = a2;
+    float denom = (NdotH2 * (a2 - 1.0) + 1.0);
+    denom = PI * denom * denom;
+
+    return nom / max(denom, 0.00000000000001); // prevent divide by zero for roughness=0.0 and NdotH=1.0
+}
+
 void main()
 {		
 	WorldPos = geo_out.WorldP;
@@ -87,6 +100,9 @@ void main()
     float sigmaY = sqrt(0.003 + 0.00192*U + 0.004);
     float slopeGD = pow(1.0f /(2*PI*sigmaX*sigmaY), -0.5f*((slopeX*slopeX) / (sigmaX*sigmaX) + (slopeY*slopeY) / (sigmaY*sigmaY))); //slope gaussian distribution 
     
+	//normal Distribution
+	//float n_distribution = DistributionGGX(Normal, halfVec, 0.6);
+
     //calculate visibility probability distribution
     float q_vn_nom = slopeGD * max(dot(ViewVec, Normal), 0) * H(LightVec, Normal);
     float sigma_phi_V = sqrt(sigmaX*sigmaX*cos(phiV)*cos(phiV) + sigmaY*sigmaY*sin(phiV)*sin(phiV));
