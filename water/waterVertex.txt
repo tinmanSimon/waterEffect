@@ -46,9 +46,18 @@ vec3 calNormal(){
 	return result;
 }
 
+vec3 addNoise(vec3 N){
+	float div = 100.0f;
+	float noisex = fract(cos(dot(N ,vec3(24.216547, 56.4578, 98.2465))) * 73569.4124) / div;
+	float noisey = fract(cos(dot(N ,vec3(24.216547, 56.4578, 98.2465))) * 73569.4124) / div;
+	float noisez = fract(cos(dot(N ,vec3(24.216547, 56.4578, 98.2465))) * 73569.4124) / div;
+    return N + vec3(noisex, noisey, noisez);
+}
+
+
 void main()
 {
-	vec4 w = model * vec4(calPos(), 1.0f);
+	vec4 w = model * vec4(addNoise(calPos()), 1.0f);
 	frag_in.WorldP = vec3(w);
 	frag_in.wNormal = normalize(calNormal());
 	frag_in.fragLightSpacePos = lightSpaceMatrix * w;

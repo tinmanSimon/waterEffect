@@ -2,7 +2,12 @@
 using namespace std;
 using namespace glm;
 
+extern Camera* cam;
+extern Window* the_window;
+extern vec3 sunLightDir;
+
 int quads_size = 24;
+float fogDistance;
 float quads[] = {
 	-1.0f,  1.0f,  0.0f, 1.0f,
 	-1.0f, -1.0f,  0.0f, 0.0f,
@@ -28,6 +33,7 @@ FrameBuffer::FrameBuffer(float w, float h) : width{ w }, height{ h } {
 	vao = new VAO(false);
 	addQuadsToBuffer(vao);
 	shader = new Shader(vertex, frag);
+	fogDistance = cam->f;
 	shader->setInt(0, "texture0");
 	shader->setInt(1, "depthBuffer");
 }
@@ -114,6 +120,12 @@ void FrameBuffer::changeBackToDefaultBufferAndDraw(vec3 clearColor) {
 	glClearColor(clearColor.x, clearColor.y, clearColor.z, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 	shader->use();
+	shader->setFloat(the_window->width / the_window->height, "aspect_ratio");
+	shader->setVec3(cam->cameraPos.x, cam->cameraPos.y, cam->cameraPos.z, "camPos");
+	shader->setVec3(cam->cameraFront.x, cam->cameraFront.y, cam->cameraFront.z, "camFront");
+	shader->setVec3(cam->cameraUp.x, cam->cameraUp.y, cam->cameraUp.z, "camUp");
+	shader->setVec3(sunLightDir.x, sunLightDir.y, sunLightDir.z, "lightPos");
+	shader->setFloat(fogDistance, "distance");
 	vao->use();
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texColorBuffer);

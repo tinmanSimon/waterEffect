@@ -7,6 +7,7 @@
 #include <iostream>
 #include "VAO.h"
 #include "Shader.h"
+#include "Camera.h"
 
 class FrameBuffer {
 private:

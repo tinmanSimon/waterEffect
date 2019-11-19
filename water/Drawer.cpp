@@ -28,7 +28,7 @@ float g_const = 13.0f;
 float t; //time is changing
 float delta_t;
 bool runAnimation = false;
-float threshold = 0.001f;
+float threshold = 0.1f;
 float energyConsumptionRate = 0.75f;
 
 FrameBuffer* fbo;
@@ -42,12 +42,19 @@ int Sphere::ID_count;
 
 extern int gameMode;
 
+bool slow_motion_enabled = true;
 float time_speed = 1.0f;
+float min_time_speed = 0.1f;
 float max_velocity = 10.0f;
 float velocity_step = 0.1f;
-float velocity_dash = 10.0f;
+float velocity_dash = 30.0f;
+float jump_range = 0.5f;
+float control_range = 0.1f;
 vec3 jump_velocity = vec3(0, 7, 0);
+float difficulty = 1.0f;
 
+extern float fogDistance;
+float fogChange = 10.0f;
 Drawer::Drawer(){
 }
 
@@ -120,11 +127,10 @@ void updateSphere(Sphere* s) {
 }
 
 void collisionDetect(Sphere* s, GLASSGROUND* g) {
-	if (jump) {
-		s->velocity += jump_velocity;
-		jump = false;
-	}
-	if (sphereIsStatic(s, g)) return;
+	bool itsStatic = sphereIsStatic(s, g);
+	if (jump == false && s->getID() == player->getID() && itsStatic) return;
+	else if(itsStatic && s->getID() != player->getID()) s->velocity += jump_velocity;
+	
 
 	float groundAltitude = g->getAltitude();
 	float edge = g->getEdge();
@@ -141,7 +147,13 @@ void collisionDetect(Sphere* s, GLASSGROUND* g) {
 		s->velocity = reflect(s->velocity, vec3(0, 1, 0));
 		s->velocity = energyConsumptionRate * s->velocity;
 		if (length(s->velocity) < 0.1f)s->velocity = vec3(0);
+
+		if (s->getID() == player->getID() && jump && dot(s->velocity, vec3(0, 1, 0)) > 0) s->velocity += jump_velocity;
+		else if (s->getID() != player->getID() && dot(s->velocity, vec3(0, 1, 0)) > 0) s->velocity += jump_velocity;
+		jump = false;
 	}
+
+	
 
 }
 
@@ -154,7 +166,7 @@ void collisionDetect(Sphere* s1, Sphere* s2) {
 	//if they hit
 	if (dist <= 0) {
 		//slow motion
-		time_speed = 4.0f;
+		if(slow_motion_enabled) time_speed = 4.0f;
 
 
 		s1->sphere_translate(dist_vec * abs(dist));
@@ -175,14 +187,31 @@ void logic() {
 
 	delta_t = t;
 	t = glfwGetTime();
-	time_speed = max(time_speed, 1.0f);
+	time_speed = max(time_speed, min_time_speed);
 	delta_t = (t - delta_t) / time_speed;
+	//cout << fogDistance << endl;
+
 	if (runAnimation) {
+		//fog
+		if (fogDistance < (cam->n + 60) || fogDistance >(5.0f * cam->f)) {
+			fogChange = -fogChange;
+			fogDistance = min(max(fogDistance, cam->n + 61), 5.0f * cam->f - 1);
+		}
+		fogDistance += fogChange * delta_t;
+
 		//update spheres
 		forUp(i, render_spheres.size()) {
 			updateSphere(render_spheres[i]);
 			if (i + 1 < render_spheres.size()) collisionDetect(render_spheres[i], render_spheres[i + 1]);
 			collisionDetect(render_spheres[i], glass);
+
+			Sphere* s = render_spheres[i];
+			if (s->getID() != player->getID()) {
+				//todo AI of s
+				vec3 dist_vec = normalize(player->getWorldPos() - s->getWorldPos());
+				s->velocity += dist_vec * velocity_step * difficulty;
+				if (length(s->velocity) > max_velocity) s->velocity = max_velocity * normalize(s->velocity);
+			}
 		}
 	}
 

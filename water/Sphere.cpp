@@ -17,7 +17,7 @@ static float PI_S = 3.1415926;
 
 extern vector<Sphere*> render_spheres;
 
-Sphere::Sphere(glm::vec3 position, float r, int sli, int lay, float m) : ID{ Sphere::ID_count++ }, pos{ vec3(0, 0, 0) }, radius{ r }, slices{ sli }, layers{ lay }, velocity{ vec3(0) }, mass{ m } {
+Sphere::Sphere(glm::vec3 position, float r, int sli, int lay, float m) : ID{ Sphere::ID_count++ }, pos{ vec3(0, 0, 0) }, radius{ r }, slices{ sli }, layers{ lay }, velocity{ vec3(0) }, mass{ m }, initialPos{ position } {
 
 	//Step 1, generate all the points.
 	//init points
@@ -271,4 +271,20 @@ float Sphere::getRadius() {
 
 Texture* Sphere::getAlbedoTexture() {
 	return albedoMap;
+}
+
+int Sphere::getID() {
+	return ID;
+}
+
+void Sphere::reset(vec3 pos) {
+	vec3 trans = pos;
+	model = translate(mat4(1), trans);
+	velocity = vec3(0);
+}
+
+void Sphere::reset() {
+	vec3 trans = initialPos;
+	model = translate(mat4(1), trans);
+	velocity = vec3(0);
 }

@@ -35,6 +35,7 @@ class Sphere : public RenderObject {
 	Texture* metallicMap;
 	Texture* roughnessMap;
 	Texture* aoMap;
+	glm::vec3 initialPos;
 
 
 public:
@@ -74,6 +75,9 @@ public:
 	glm::vec3 getWorldPos();
 	float getRadius();
 	Texture* getAlbedoTexture();
+	int getID();
+	void reset(glm::vec3 pos);
+	void reset();
 };
 
 extern std::vector<Sphere*> spheres;

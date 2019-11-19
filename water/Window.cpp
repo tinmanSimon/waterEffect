@@ -14,6 +14,9 @@ extern float max_velocity;
 extern float velocity_step;
 extern bool jump;
 extern float velocity_dash;
+extern float fogDistance;
+extern bool slow_motion_enabled;
+extern vector<Sphere*> render_spheres;
 
 Window::Window(char* window_name, float _width, float _height)
 {
@@ -51,11 +54,25 @@ void processInput(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 
 	if (key == GLFW_KEY_UP && action == GLFW_PRESS) {
-		time_speed += 1.0f;
+		if (time_speed < 1.0f) time_speed = 1.0f;
+		else time_speed += 1.0f;
 	}
 
 	if (key == GLFW_KEY_DOWN && action == GLFW_PRESS) {
 		if(time_speed > 1.0f) time_speed -= 1.0f;
+		else if(time_speed > 0.2f) time_speed -= 0.1f;
+	}
+
+	if (key == GLFW_KEY_O && action == GLFW_PRESS) {
+		slow_motion_enabled = !slow_motion_enabled;
+	}
+
+	if (key == GLFW_KEY_LEFT && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+		if(fogDistance > cam->n) fogDistance -= 1.0f;
+	}
+
+	if (key == GLFW_KEY_RIGHT && (action == GLFW_PRESS || action == GLFW_REPEAT)) {
+		if (fogDistance < 5 * cam->f) fogDistance += 1.0f;
 	}
 	 
 	if (gameMode == 0 && key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
@@ -69,6 +86,18 @@ void processInput(GLFWwindow* window, int key, int scancode, int action, int mod
 	if (key == GLFW_KEY_LEFT_SHIFT && action == GLFW_PRESS) {
 		if (player != NULL && gameMode == 0) {
 			player->velocity += velocity_dash * normalize(cam->cameraFront);
+		}
+	}
+
+	if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
+		forUp(i, render_spheres.size()) {
+			render_spheres[i]->reset();
+		}
+	}
+
+	if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
+		forUp(i, render_spheres.size()) {
+			render_spheres[i]->reset(glm::vec3(i*2, 8, i*2));
 		}
 	}
 }

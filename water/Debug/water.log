@@ -1,4 +1,6 @@
 ﻿  Window.cpp
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Window.cpp(131): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Window.cpp(162): warning C4244: 'argument': conversion from 'float' to 'GLsizei', possible loss of data
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Window.cpp(93): warning C4018: '<': signed/unsigned mismatch
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Window.cpp(99): warning C4018: '<': signed/unsigned mismatch
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Window.cpp(161): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Window.cpp(192): warning C4244: 'argument': conversion from 'float' to 'GLsizei', possible loss of data
   water.vcxproj -> C:\Users\wudis\Documents\graphics\projects\water\water\Debug\water.exe
