@@ -72,6 +72,9 @@
     <ClCompile Include="Light.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Particle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h">
@@ -114,6 +117,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Light.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Particle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -167,6 +173,12 @@
       <Filter>Resource Files</Filter>
     </Text>
     <Text Include="depthFrag.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="particleVertex.txt">
+      <Filter>Resource Files</Filter>
+    </Text>
+    <Text Include="particleFrag.txt">
       <Filter>Resource Files</Filter>
     </Text>
   </ItemGroup>

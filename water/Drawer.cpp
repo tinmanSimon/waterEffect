@@ -55,6 +55,9 @@ float difficulty = 1.0f;
 
 extern float fogDistance;
 float fogChange = 10.0f;
+
+bool useFrameBuffer = true;
+
 Drawer::Drawer(){
 }
 
@@ -79,21 +82,23 @@ void Drawer::drawerinit() {
 	//init water
 	Water::geometry = false;
 	glass = new GLASSGROUND(4.0f, 40.0f);
-	renderObjects.push_back(new Water(1000, 1000, 0.3f));
-	//renderObjects.push_back(new WATERGROUND(-2.0f));
+	renderObjects.push_back(new Water(200, 200, 0.6f));
+	renderObjects.push_back(new WATERGROUND(-2.0f));
 	//renderObjects.push_back(new WATERGROUND(-200.0f));
 
 	//init spheres
 	Sphere::ID_count = 0;
 
-	player = new Sphere(vec3(-30.5, 20, -30.5), 1, 400, 100);
+	player = new Sphere(vec3(-30.5, 20, -30.5), 1, 40, 40);
 	renderObjects.push_back(player);
 	render_spheres.push_back(player);
 	forUp(i, 1) {
-		Sphere* tmp = new Sphere(vec3(i * 6 - 30, i * 10 + 5, i * 6 - 30), 1, 400, 100);
+		Sphere* tmp = new Sphere(vec3(i * 6 - 30, i * 10 + 5, i * 6 - 30), 1, 40, 40);
 		render_spheres.push_back(tmp);
 		renderObjects.push_back(tmp);
 	}
+
+	renderObjects.push_back(new Particle());
 
 	renderObjects.push_back(glass);
 
@@ -226,9 +231,9 @@ void Drawer::draw() {
 	//forUp(i, renderObjects.size()) renderObjects[i]->drawShadow(shadowmap->getShader());
 	//shadowmap->changeBack();
 
-	fbo->useFrameBuffer(clearColor);
+	if(useFrameBuffer) fbo->useFrameBuffer(clearColor);
 	forUp(i, renderObjects.size()) renderObjects[i]->draw();
-	fbo->changeBackToDefaultBufferAndDraw(clearColor);
+	if (useFrameBuffer) fbo->changeBackToDefaultBufferAndDraw(clearColor);
 }
 
 void Drawer::freeRenderObjects() {

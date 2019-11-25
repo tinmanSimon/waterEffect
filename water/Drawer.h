@@ -12,6 +12,7 @@
 #include "GlassGround.h"
 #include "FrameBuffer.h"
 #include "Shadow.h"
+#include "Particle.h"
 
 extern bool pause;
 extern int skyboxes;

@@ -17,6 +17,7 @@ extern float velocity_dash;
 extern float fogDistance;
 extern bool slow_motion_enabled;
 extern vector<Sphere*> render_spheres;
+extern bool useFrameBuffer;
 
 Window::Window(char* window_name, float _width, float _height)
 {
@@ -47,6 +48,10 @@ void processInput(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 	if (key == GLFW_KEY_K && action == GLFW_PRESS) {
 		runAnimation = !runAnimation;
+	}
+
+	if (key == GLFW_KEY_F && action == GLFW_PRESS) {
+		useFrameBuffer = !useFrameBuffer;
 	}
 
 	if (key == GLFW_KEY_G && action == GLFW_PRESS) {

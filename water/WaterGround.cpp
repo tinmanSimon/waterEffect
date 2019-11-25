@@ -3,7 +3,7 @@ using namespace std;
 using namespace glm;
 
 const float edge = 10000;
-mat4 model, view, proj;
+static mat4 model, view, proj;
 extern vec3 sunLightDir;
 
 void WATERGROUND::addTrianglesToBuffer() {
