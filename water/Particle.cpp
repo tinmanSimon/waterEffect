@@ -9,6 +9,11 @@ float particleVertices[] = {
 };
 */
 
+const long particleCount = 2000000;
+const float particle_size = 0.0025;
+extern bool runAnimation;
+static float t;
+extern float delta_t;
 
 float particleVertices[] = {
 	-1.155, 0, -1,
@@ -31,7 +36,7 @@ float particleVertices[] = {
 
 Particle::Particle() {
 	//preprocessing
-	forUp(i, 36) particleVertices[i] *= 0.01;
+	forUp(i, 36) particleVertices[i] *= particle_size;
 
 	glGenVertexArrays(1, &quadVAO);
 	glGenBuffers(1, &quadVBO);
@@ -43,6 +48,8 @@ Particle::Particle() {
 
 	shader = new Shader(vertex, frag);
 	model = mat4(1);
+	model = translate(model, vec3(0, 8, 0));
+	t = 0;
 }
 
 
@@ -53,10 +60,14 @@ Particle::~Particle() {
 }
 
 void Particle::useShader() {
+	if(runAnimation) t = t + delta_t;
+
 	shader->use();
 	shader->setmat4(model, "model");
 	shader->setmat4(cam->view, "view");
 	shader->setmat4(cam->projection, "projection");
+	shader->setInt(particleCount, "particleCount");
+	shader->setFloat(t, "time");
 }
 
 
@@ -64,7 +75,7 @@ void Particle::useShader() {
 void Particle::draw() {
 	glBindVertexArray(quadVAO);
 	useShader();
-	glDrawArraysInstanced(GL_TRIANGLES, 0, 12, 100);
+	glDrawArraysInstanced(GL_TRIANGLES, 0, 12, particleCount);
 	//glDrawArrays(GL_TRIANGLES, 0, 12);
 	glBindVertexArray(0);
 }

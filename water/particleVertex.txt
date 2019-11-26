@@ -3,7 +3,43 @@ layout (location = 0) in vec3 pos;
 uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
+uniform int particleCount;
+uniform float time;
+
+float radius = 1.0f;
+float step = 0.04f;
+int curDivides = 400;
+int curDividesSlices = 800;
+float PI = 3.1415926;
+int sphere_layer_particles_count = curDivides * curDividesSlices;
+
+float gravity_constant = -9.8f;
+float glass_altitude = 4.0f;
+
+vec3 getCurPos(vec3 pos, int InstanceID){
+	vec3 rightRadiusVec = vec3(radius, 0, 0);
+	int layer = InstanceID / curDividesSlices;
+	float x, y, z;
+	y = ((curDivides / 2) - layer) * ((2.0f * radius) / curDivides);
+	int slice = InstanceID % curDividesSlices;
+	float curTheta = (slice * 2.0f * PI) / curDividesSlices;
+	float L = radius * abs((curDivides / 2) - layer) / (curDivides / 2);
+	float curLayerRadius = sqrt(radius * radius - L * L);
+	x = curLayerRadius * cos(curTheta);
+	z = curLayerRadius * sin(curTheta);
+	return vec3(x,y,z) + pos;
+}
+
 void main() {
-    gl_Position = projection * view * model * vec4((pos + vec3(gl_InstanceID / 100.0f)), 1.0);
+	int step_count = gl_InstanceID / sphere_layer_particles_count;
+	radius = radius - step * step_count;
+	int layer_ID = gl_InstanceID % sphere_layer_particles_count;
+	
+	float vertical_dist = 0.5 * gravity_constant * time * time;
+	vec3 curPos = getCurPos(pos, layer_ID) + vec3(0, vertical_dist, 0);
+	vec4 world_pos = model * vec4(curPos, 1.0);
+	world_pos.y = max(world_pos.y, glass_altitude);
+
+    gl_Position = projection * view * world_pos;
 	//gl_Position = projection * view * model * vec4(pos, 1);
 }
