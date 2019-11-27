@@ -14,6 +14,17 @@ extern mat4 lightSpaceMatrix;
 extern mat4 lightProjection;
 extern mat4 lightView;
 
+int waveSize;
+vec2 water_directions[100];
+float water_As[100];
+float water_Qs[100];
+float water_speeds[100];
+float water_wavelengths[100];
+float water_ws[100];
+float water_phase_constants[100];
+
+mat4 water_model;
+
 void Water::addTriangles() {
 	triangles.resize((l - 1) * (w - 1) * 6 * 2);
 	int triangleCount = 0;
@@ -50,6 +61,7 @@ void Water::createShader(const char* vertex, const char* frag) {
 
 void Water::waterLogic() {
 	model = translate(mat4(1.0f), vec3(0, -1.0f, 0));
+	water_model = model;
 	view = cam->view;
 	proj = cam->projection;
 
@@ -129,7 +141,7 @@ void Water::initShader() {
 
 	//init vertex shader
 	string tmp;
-	int waveSize = 30;
+	waveSize = 30;
 	shader->setInt(waveSize, "waveSize");
 	//vec2 dirct = vec2(randFloat(-1.0f, 1.0f), randFloat(-1.0f, 1.0f));
 	forUp(i, waveSize) {
@@ -155,6 +167,14 @@ void Water::initShader() {
 		shader->setFloat(Q, tmp.c_str());
 		tmp = "waves.phase_constants[" + to_string(i) + "]"; //Qs
 		shader->setFloat(phase_constant, tmp.c_str());
+
+		water_directions[i] = direction;
+		water_As[i] = A;
+		water_speeds[i] = speed;
+		water_wavelengths[i] = wavelength;
+		water_ws[i] = w;
+		water_Qs[i] = Q;
+		water_phase_constants[i] = phase_constant;
 	}
 	
 }

@@ -14,6 +14,8 @@ class Particle : public RenderObject {
 	unsigned int quadVAO;
 	void useShader();
 	glm::mat4 model, view, proj;
+	void initShader();
+	Texture* albedoMap;
 public:
 	Particle();
 	~Particle();

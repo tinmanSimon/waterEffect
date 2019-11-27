@@ -1,4 +1,4 @@
 ﻿  Particle.cpp
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Particle.cpp(13): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Particle.cpp(34): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Particle.cpp(14): warning C4305: 'initializing': truncation from 'double' to 'float'
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Particle.cpp(47): warning C4305: 'initializing': truncation from 'double' to 'float'
   water.vcxproj -> C:\Users\wudis\Documents\graphics\projects\water\water\Debug\water.exe

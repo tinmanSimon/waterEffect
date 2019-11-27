@@ -1,10 +1,12 @@
 #version 330 core
 layout (location = 0) in vec3 pos;
+
 uniform mat4 projection;
 uniform mat4 view;
 uniform mat4 model;
 uniform int particleCount;
 uniform float time;
+uniform float water_time;
 
 float radius = 1.0f;
 float step = 0.04f;
@@ -15,6 +17,28 @@ int sphere_layer_particles_count = curDivides * curDividesSlices;
 
 float gravity_constant = -9.8f;
 float glass_altitude = 4.0f;
+
+float floating_speed = 0.02;
+
+uniform mat4 water_model;
+uniform float hitTime;
+uniform struct WAVES {
+  int waveSize;
+  vec2 Ds[100];
+  float Qs[100];
+  float wavelengths[100];
+  float As[100]; //amplitudes
+  float frequencies[100];
+  float phase_constants[100];
+  float speeds[100];
+  float ws[100];
+} waves;
+
+
+
+float tiny = 0.0001f;
+
+out vec2 uv;
 
 vec3 getCurPos(vec3 pos, int InstanceID){
 	vec3 rightRadiusVec = vec3(radius, 0, 0);
@@ -30,16 +54,38 @@ vec3 getCurPos(vec3 pos, int InstanceID){
 	return vec3(x,y,z) + pos;
 }
 
+vec3 calPos(vec3 aPos){
+	vec3 result = aPos;
+	result.y = 0;
+	for(int i = 0; i < waves.waveSize; ++i){
+		result.x += waves.Qs[i] * waves.As[i] * waves.Ds[i].x * cos(waves.ws[i] * dot(waves.Ds[i], vec2(aPos.x, aPos.z)) + waves.phase_constants[i] * water_time);
+		result.z += waves.Qs[i] * waves.As[i] * waves.Ds[i].y * cos(waves.ws[i] * dot(waves.Ds[i], vec2(aPos.x, aPos.z)) + waves.phase_constants[i] * water_time);
+		result.y += waves.As[i] * sin(waves.ws[i] * dot(waves.Ds[i], vec2(aPos.x, aPos.z)) + waves.phase_constants[i] * water_time);
+	}
+	return result;
+}
+
 void main() {
 	int step_count = gl_InstanceID / sphere_layer_particles_count;
 	radius = radius - step * step_count;
 	int layer_ID = gl_InstanceID % sphere_layer_particles_count;
 	
 	float vertical_dist = 0.5 * gravity_constant * time * time;
-	vec3 curPos = getCurPos(pos, layer_ID) + vec3(0, vertical_dist, 0);
+	vec3 model_pos = getCurPos(pos, layer_ID);
+	vec3 the_vec = normalize(vec3(0) - model_pos);
+	vec3 curPos = model_pos + vec3(0, vertical_dist, 0);
 	vec4 world_pos = model * vec4(curPos, 1.0);
-	world_pos.y = max(world_pos.y, glass_altitude);
+	//world_pos.y = max(world_pos.y, glass_altitude + tiny);
+
+	vec3 waterPos = vec3(water_model * vec4(calPos(vec3(world_pos)), 1));
+	if(waterPos.y >= world_pos.y) {
+		vec3 newWaterPos = vec3(water_model * vec4(calPos(vec3(world_pos.x - hitTime * the_vec.x * floating_speed, world_pos.y, world_pos.z - hitTime * the_vec.z * floating_speed)), 1));
+		world_pos = vec4(newWaterPos.x, newWaterPos.y + 0.05, newWaterPos.z, 1);
+	}
 
     gl_Position = projection * view * world_pos;
 	//gl_Position = projection * view * model * vec4(pos, 1);
+
+	
+	uv = vec2((0.5f + atan(the_vec.z, the_vec.x) / (2*PI)), 0.5f - asin(the_vec.y) / PI);
 }
