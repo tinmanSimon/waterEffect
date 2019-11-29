@@ -10,10 +10,9 @@ float particleVertices[] = {
 };
 */
 
-const long particleCount = 2000000;
-const float particle_size = 0.0025;
+const long particleCount = 300000;
+const float particle_size = 0.008;
 extern bool runAnimation;
-static float t;
 extern float delta_t;
 extern float t_diff;
 
@@ -27,6 +26,8 @@ extern float water_ws[100];
 extern float water_phase_constants[100];
 
 extern mat4 water_model;
+
+int ID_count = 0;
 
 float particleVertices[] = {
 	-1.155, 0, -1,
@@ -77,7 +78,9 @@ void Particle::initShader() {
 	}
 }
 
-Particle::Particle() {
+Particle::Particle(int i) {
+	ID = ID_count++;
+
 	//preprocessing
 	forUp(i, 36) particleVertices[i] *= particle_size;
 
@@ -91,10 +94,16 @@ Particle::Particle() {
 
 	initShader();
 	model = mat4(1);
-	model = translate(model, vec3(0, 8, 0));
 	t = 0;
 
 	albedoMap = new Texture("copper-rock1-alb.png");
+
+	hitWater = false;
+
+	hitWaters.resize(i);
+	hit_times.resize(i);
+	velocities.resize(i);
+	models.resize(i);
 }
 
 
@@ -105,15 +114,13 @@ Particle::~Particle() {
 	glDeleteBuffers(1, &quadVBO);
 }
 
-void Particle::useShader() {
-	if(runAnimation) t = t + delta_t;
-
+void Particle::useShader(int i) {
 	shader->use();
-	shader->setmat4(model, "model");
+	shader->setmat4(models[i], "model");
 	shader->setmat4(cam->view, "view");
 	shader->setmat4(cam->projection, "projection");
 	shader->setInt(particleCount, "particleCount");
-	shader->setFloat(t, "time");
+	shader->setFloat(t - hit_times[i], "time");
 	shader->setmat4(water_model, "water_model");
 	shader->setFloat(t_diff, "water_time");
 
@@ -121,14 +128,43 @@ void Particle::useShader() {
 	shader->setInt(0, "albedoMap");
 
 	shader->setFloat(t_diff, "hitTime");
+	shader->setVec3(velocities[i], "velocity");
+
+	//cout << "ID: " << ID << ", model: " << to_string(model) << endl;
 }
 
 
 
 void Particle::draw() {
-	glBindVertexArray(quadVAO);
-	useShader();
-	glDrawArraysInstanced(GL_TRIANGLES, 0, 12, particleCount);
-	//glDrawArrays(GL_TRIANGLES, 0, 12);
-	glBindVertexArray(0);
+	if (runAnimation) t = t + delta_t;
+	//cout << hitWater << endl;
+	forUp(i, hit_times.size()) {
+		if (hitWaters[i]) {
+			//cout << "ID: " << ID << endl;
+			glBindVertexArray(quadVAO);
+			useShader(i);
+			glDrawArraysInstanced(GL_TRIANGLES, 0, 12, particleCount);
+			glBindVertexArray(0);
+		}
+	}
+	
+	
+}
+
+void Particle::reset_time() {
+	t = 0;
+	forUp(i, hitWaters.size()) hitWaters[i] = false;
+}
+
+void Particle::it_hits_water(vec3 pos, vec3 v, int i) {
+	models[i] = translate(mat4(1), pos);
+	hitWaters[i] = true;
+	hit_times[i] = t;
+	velocities[i] = v;
+
+	//cout << t << endl;
+}
+
+bool Particle::hits_water() {
+	return hitWater;
 }

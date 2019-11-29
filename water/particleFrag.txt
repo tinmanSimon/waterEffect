@@ -2,8 +2,21 @@
 out vec4 FragColor;
 
 in vec2 uv;
+in float lava_density;
 uniform sampler2D albedoMap;
 
+vec3 lava_bottom = vec3(0, 1, 1);
+vec3 lava_side = vec3(0, 0.498, 1);
+
+vec3 lava_side2 = vec3(0.157,0.557,0.643);
+
+
 void main() {
-	FragColor = texture(albedoMap, uv);
+	vec4 color2 = texture(albedoMap, uv);
+	color2 = (vec4(mix(lava_bottom, lava_side, lava_density), 1) + FragColor) * 0.5;
+	vec3 color = vec3(color2);
+	color = color / (color + vec3(1.0));
+    color = pow(color, vec3(1.0/2.2)); 
+
+    FragColor = vec4(color, 1);
 }

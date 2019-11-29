@@ -18,6 +18,7 @@ extern float fogDistance;
 extern bool slow_motion_enabled;
 extern vector<Sphere*> render_spheres;
 extern bool useFrameBuffer;
+extern Particle* particle;
 
 Window::Window(char* window_name, float _width, float _height)
 {
@@ -98,12 +99,14 @@ void processInput(GLFWwindow* window, int key, int scancode, int action, int mod
 		forUp(i, render_spheres.size()) {
 			render_spheres[i]->reset();
 		}
+		particle->reset_time();
 	}
 
 	if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
 		forUp(i, render_spheres.size()) {
 			render_spheres[i]->reset(glm::vec3(i*2, 8, i*2));
 		}
+		particle->reset_time();
 	}
 }
 

@@ -136,7 +136,7 @@ void main()
 	vec3 tmp = mix(reflected, refracted, fresnel);
 	ambient = mix(ambient, tmp, fresnel);
     vec3 color = ambient + radiance * brdf + radiance * specular;
-	color += vec3(0.8,0.9,0.6)*0.6 * (WorldPos.y - (-1.0f)) * 0.18 * atten;
+	color += vec3(0.48,0.54,0.36) * (WorldPos.y - (-1.0f)) * 0.18 * atten;
 
     // HDR tonemapping
     color = color / (color + vec3(1.0));

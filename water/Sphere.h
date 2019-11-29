@@ -37,6 +37,7 @@ class Sphere : public RenderObject {
 	Texture* aoMap;
 	glm::vec3 initialPos;
 
+	bool hit_the_water = false;
 
 public:
 	static int ID_count;
@@ -78,6 +79,9 @@ public:
 	int getID();
 	void reset(glm::vec3 pos);
 	void reset();
+
+	void hit_water();
+	bool has_hit_water();
 };
 
 extern std::vector<Sphere*> spheres;

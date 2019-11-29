@@ -184,6 +184,8 @@ void Sphere::useShader(){
 }
 
 void Sphere::draw(int drawType) {
+	if (hit_the_water) return;
+
 	if (vao == NULL) {
 		cout << "ERROR! vao is null but sphere tries to draw!" << endl;
 		return;
@@ -281,10 +283,20 @@ void Sphere::reset(vec3 pos) {
 	vec3 trans = pos;
 	model = translate(mat4(1), trans);
 	velocity = vec3(0);
+	hit_the_water = false;
 }
 
 void Sphere::reset() {
 	vec3 trans = initialPos;
 	model = translate(mat4(1), trans);
 	velocity = vec3(0);
+	hit_the_water = false;
+}
+
+void Sphere::hit_water() {
+	hit_the_water = true;
+}
+
+bool Sphere::has_hit_water() {
+	return hit_the_water;
 }

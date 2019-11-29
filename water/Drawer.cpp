@@ -16,10 +16,14 @@ VAO* msaaVAO;
 Shader* msaaShader;
 Sphere* player;
 GLASSGROUND* glass;
+Particle* particle;
+
+int enemy_count = 3;
 
 bool jump = false;
 
 vector<Sphere*> render_spheres;
+vector<Particle*> render_particles;
 
 vector<RenderObject*> Drawer::renderObjects;
 //vector<Water*> Drawer::renderObjects;
@@ -58,6 +62,8 @@ float fogChange = 10.0f;
 
 bool useFrameBuffer = true;
 
+
+
 Drawer::Drawer(){
 }
 
@@ -82,7 +88,7 @@ void Drawer::drawerinit() {
 	//init water
 	Water::geometry = false;
 	glass = new GLASSGROUND(4.0f, 40.0f);
-	renderObjects.push_back(new Water(200, 200, 0.3f));
+	renderObjects.push_back(new Water(500, 500, 0.4f));
 	renderObjects.push_back(new WATERGROUND(-2.0f));
 	//renderObjects.push_back(new WATERGROUND(-200.0f));
 
@@ -92,13 +98,18 @@ void Drawer::drawerinit() {
 	player = new Sphere(vec3(-30.5, 20, -30.5), 1, 40, 40);
 	renderObjects.push_back(player);
 	render_spheres.push_back(player);
-	forUp(i, 1) {
+	forUp(i, enemy_count) {
 		Sphere* tmp = new Sphere(vec3(i * 6 - 30, i * 10 + 5, i * 6 - 30), 1, 40, 40);
 		render_spheres.push_back(tmp);
 		renderObjects.push_back(tmp);
 	}
 
-	renderObjects.push_back(new Particle());
+	//particle = new Particle();
+	//renderObjects.push_back(particle);
+	//forUp(i, enemy_count + 1) {
+	particle = new Particle(enemy_count + 1);
+	renderObjects.push_back(particle);
+	//}
 
 	renderObjects.push_back(glass);
 
@@ -206,16 +217,28 @@ void logic() {
 
 		//update spheres
 		forUp(i, render_spheres.size()) {
-			updateSphere(render_spheres[i]);
-			if (i + 1 < render_spheres.size()) collisionDetect(render_spheres[i], render_spheres[i + 1]);
+			Sphere* s = render_spheres[i];
+			//Particle* particle = render_particles[0];
+			if (s->has_hit_water()) continue;
+
+			//otherwise, it doesn't hit water and we update its location.
+			updateSphere(s);
+			for (int j = 0; j < render_spheres.size() - 1; ++j) 
+				if(i != j) collisionDetect(render_spheres[i], render_spheres[j]);
+			
+			//if (i + 1 < render_spheres.size()) collisionDetect(render_spheres[i], render_spheres[i + 1]);
 			collisionDetect(render_spheres[i], glass);
 
-			Sphere* s = render_spheres[i];
 			if (s->getID() != player->getID()) {
-				//todo AI of s
 				vec3 dist_vec = normalize(player->getWorldPos() - s->getWorldPos());
 				s->velocity += dist_vec * velocity_step * difficulty;
 				if (length(s->velocity) > max_velocity) s->velocity = max_velocity * normalize(s->velocity);
+			}
+
+			//check if we hit the water, if yes then we render particles instead of spheres.
+			if (s->getWorldPos().y + 1  - s->getRadius()< 1) {
+				particle->it_hits_water(s->getWorldPos(), s->velocity, i);
+				s->hit_water();
 			}
 		}
 	}
