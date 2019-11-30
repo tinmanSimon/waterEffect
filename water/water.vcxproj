@@ -140,6 +140,7 @@
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="Shadow.cpp" />
     <ClCompile Include="simon_func.cpp" />
+    <ClCompile Include="Skybox.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Sphere.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -158,6 +159,7 @@
     <ClInclude Include="RenderObject.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="Shadow.h" />
+    <ClInclude Include="Skybox.h" />
     <ClInclude Include="Sphere.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="VAO.h" />
@@ -174,6 +176,8 @@
     <Text Include="glassGroundVertex.txt" />
     <Text Include="particleFrag.txt" />
     <Text Include="particleVertex.txt" />
+    <Text Include="skyboxFrag.txt" />
+    <Text Include="skyboxVertex.txt" />
     <Text Include="sphereFrag.txt" />
     <Text Include="sphereVertex.txt" />
     <Text Include="waterDebugFrag.txt" />

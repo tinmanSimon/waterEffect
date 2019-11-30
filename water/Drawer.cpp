@@ -18,7 +18,7 @@ Sphere* player;
 GLASSGROUND* glass;
 Particle* particle;
 
-int enemy_count = 3;
+int enemy_count = 1;
 
 bool jump = false;
 
@@ -90,6 +90,9 @@ void Drawer::drawerinit() {
 
 	//init time
 	t = glfwGetTime();
+
+	//init skybox
+	renderObjects.push_back(new Skybox());
 
 	//init water
 	Water::geometry = false;

@@ -13,6 +13,7 @@
 #include "FrameBuffer.h"
 #include "Shadow.h"
 #include "Particle.h"
+#include "Skybox.h"
 
 extern bool pause;
 extern int skyboxes;

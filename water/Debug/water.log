@@ -1,6 +1,2 @@
-﻿  Window.cpp
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Window.cpp(109): warning C4018: '<': signed/unsigned mismatch
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Window.cpp(116): warning C4018: '<': signed/unsigned mismatch
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Window.cpp(179): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Window.cpp(210): warning C4244: 'argument': conversion from 'float' to 'GLsizei', possible loss of data
+﻿  Skybox.cpp
   water.vcxproj -> C:\Users\wudis\Documents\graphics\projects\water\water\Debug\water.exe
