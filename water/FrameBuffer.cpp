@@ -6,6 +6,12 @@ extern Camera* cam;
 extern Window* the_window;
 extern vec3 sunLightDir;
 
+float blured = -1.0f;
+float blur_density = 100.0f;
+float blur_dismantle_speed = 1.0f;
+float blur_limit = 1000.0f;
+bool enable_blur = true;
+
 int quads_size = 24;
 float fogDistance;
 float quads[] = {
@@ -126,6 +132,8 @@ void FrameBuffer::changeBackToDefaultBufferAndDraw(vec3 clearColor) {
 	shader->setVec3(cam->cameraUp.x, cam->cameraUp.y, cam->cameraUp.z, "camUp");
 	shader->setVec3(sunLightDir.x, sunLightDir.y, sunLightDir.z, "lightPos");
 	shader->setFloat(fogDistance, "distance");
+	shader->setFloat(blured, "blured");
+	shader->setFloat(blur_density, "blur_density");
 	vao->use();
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texColorBuffer);

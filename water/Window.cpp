@@ -19,6 +19,9 @@ extern bool slow_motion_enabled;
 extern vector<Sphere*> render_spheres;
 extern bool useFrameBuffer;
 extern Particle* particle;
+extern float blured;
+extern float blur_density;
+extern bool enable_blur;
 
 Window::Window(char* window_name, float _width, float _height)
 {
@@ -57,6 +60,13 @@ void processInput(GLFWwindow* window, int key, int scancode, int action, int mod
 
 	if (key == GLFW_KEY_G && action == GLFW_PRESS) {
 		gameMode = 1 - gameMode;
+	}
+
+	if (key == GLFW_KEY_B && action == GLFW_PRESS) {
+		//blured = 1 - blured;
+		//blur_density = 100;
+		enable_blur = !enable_blur;
+		if (enable_blur == false) blured = -1.0f;
 	}
 
 	if (key == GLFW_KEY_UP && action == GLFW_PRESS) {

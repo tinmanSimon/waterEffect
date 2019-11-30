@@ -83,7 +83,7 @@ void main() {
 	vec3 horizontal_vec = -vec3(the_vec.x, 0, the_vec.z);
 	lava_density = length(horizontal_vec);
 	float vertical_dist = 0.5 * gravity_constant * time * time * (1 + length(horizontal_vec));
-	vec3 change_vec = horizontal_vec * time * explode_speed + vec3(0, vertical_dist, 0) + velocity * min(time, 0.2);
+	vec3 change_vec = horizontal_vec * time * explode_speed + vec3(0, vertical_dist, 0) + velocity * min(time, 0.1);
 	vec3 curPos = model_pos + change_vec;
 	vec4 world_pos = model * vec4(curPos, 1.0);
 	//world_pos.y = max(world_pos.y, glass_altitude + tiny);

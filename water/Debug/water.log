@@ -1,12 +1,6 @@
-﻿  Particle.cpp
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Particle.cpp(14): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Particle.cpp(48): warning C4305: 'initializing': truncation from 'double' to 'float'
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Particle.cpp(141): warning C4018: '<': signed/unsigned mismatch
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Particle.cpp(156): warning C4018: '<': signed/unsigned mismatch
-  Window.cpp
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Window.cpp(99): warning C4018: '<': signed/unsigned mismatch
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Window.cpp(106): warning C4018: '<': signed/unsigned mismatch
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Window.cpp(169): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\wudis\Documents\graphics\projects\water\water\water\Window.cpp(200): warning C4244: 'argument': conversion from 'float' to 'GLsizei', possible loss of data
-  Generating Code...
+﻿  Window.cpp
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Window.cpp(109): warning C4018: '<': signed/unsigned mismatch
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Window.cpp(116): warning C4018: '<': signed/unsigned mismatch
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Window.cpp(179): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\wudis\Documents\graphics\projects\water\water\water\Window.cpp(210): warning C4244: 'argument': conversion from 'float' to 'GLsizei', possible loss of data
   water.vcxproj -> C:\Users\wudis\Documents\graphics\projects\water\water\Debug\water.exe

@@ -63,6 +63,12 @@ float fogChange = 10.0f;
 bool useFrameBuffer = true;
 
 
+extern bool enable_blur;
+extern float blur_density;
+extern float blured;
+extern float blur_dismantle_speed;
+extern float blur_limit;
+
 
 Drawer::Drawer(){
 }
@@ -184,6 +190,13 @@ void collisionDetect(Sphere* s1, Sphere* s2) {
 		//slow motion
 		if(slow_motion_enabled) time_speed = 4.0f;
 
+		if (enable_blur) {
+			if (s1->getID() == player->getID() || s2->getID() == player->getID()) {
+				blured = 1.0f;
+				blur_density = 100;
+			}
+		}
+
 
 		s1->sphere_translate(dist_vec * abs(dist));
 		float s1_velocity = dot(dist_vec, s1->velocity);
@@ -208,6 +221,12 @@ void logic() {
 	//cout << fogDistance << endl;
 
 	if (runAnimation) {
+		//blur
+		if (blured > 0) {
+			blur_density += blur_dismantle_speed;
+			if (blur_density > blur_limit) blured = -1;
+		}
+
 		//fog
 		if (fogDistance < (cam->n + 60) || fogDistance >(5.0f * cam->f)) {
 			fogChange = -fogChange;
