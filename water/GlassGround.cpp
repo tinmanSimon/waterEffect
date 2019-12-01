@@ -6,6 +6,7 @@ static mat4 model, view, proj;
 extern Sphere* player;
 extern vector<Sphere*> render_spheres;
 extern vec3 sunLightDir;
+extern bool particleDemo;
 
 void GLASSGROUND::addTrianglesToBuffer() {
 	vao->bufferData(&triangles[0], triangles.size() * sizeof(vec3));
@@ -83,6 +84,7 @@ void GLASSGROUND::useShader(Shader* shader, Texture* text) {
 }
 
 void GLASSGROUND::draw() {
+	if (particleDemo) return;
 	vao->use();
 	useShader(shader, text);
 	glEnable(GL_BLEND);

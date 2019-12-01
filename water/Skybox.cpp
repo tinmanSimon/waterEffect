@@ -30,15 +30,11 @@ vector<std::string> clouds2{
 		"cloudtop_bk.png",
 
 		"cloudtop_up.png",
-		"cloudtop_dn.png",
+		"cloud_down_looking.png",
 
 		"cloudtop_rt.png",
 		"cloudtop_lf.png"
 };
-
-
-
-
 
 float skyboxVertices[] = {
 	-1.0f,  1.0f, -1.0f,

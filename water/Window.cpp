@@ -24,6 +24,8 @@ extern float blur_density;
 extern bool enable_blur;
 extern int render_count;
 extern const int original_render_count;
+extern int mode;
+extern bool particleDemo;
 
 Window::Window(char* window_name, float _width, float _height)
 {
@@ -69,6 +71,10 @@ void processInput(GLFWwindow* window, int key, int scancode, int action, int mod
 		//blur_density = 100;
 		enable_blur = !enable_blur;
 		if (enable_blur == false) blured = -1.0f;
+	}
+
+	if (key == GLFW_KEY_M && action == GLFW_PRESS) {
+		mode = 1 - mode;
 	}
 
 	if (key == GLFW_KEY_UP && action == GLFW_PRESS) {
@@ -123,9 +129,28 @@ void processInput(GLFWwindow* window, int key, int scancode, int action, int mod
 		enable_blur = false;
 		blured = -1.0f;
 		slow_motion_enabled = true;
+		particleDemo = false;
 	}
 
 	if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
+		render_count = 0;
+		forUp(i, render_spheres.size()) {
+			render_spheres[i]->reset(glm::vec3(0, -1000, 0));
+			render_spheres[i]->set_runAI(false);
+		}
+		particle->reset_time();
+		particle->it_hits_water(glm::vec3(0, 20, 0), glm::vec3(0), 0);
+
+		time_speed = 1.0;
+		enable_blur = false;
+		blured = -1.0f;
+		slow_motion_enabled = true;
+		gameMode = 1;
+		particleDemo = true;
+		runAnimation = false;
+	}
+
+	if (key == GLFW_KEY_3 && action == GLFW_PRESS) {
 		render_count = original_render_count;
 		forUp(i, render_spheres.size()) {
 			render_spheres[i]->reset(glm::vec3(i*2, 8, i*2));
@@ -137,7 +162,9 @@ void processInput(GLFWwindow* window, int key, int scancode, int action, int mod
 		enable_blur = true;
 		blured = -1.0f;
 		slow_motion_enabled = false;
+		particleDemo = false;
 	}
+
 }
 
 //this processes directly, so it makes movement smooth

@@ -18,9 +18,9 @@ Sphere* player;
 GLASSGROUND* glass;
 Particle* particle;
 
-int enemy_count = 3;
-int render_count = 4;
-extern const int original_render_count = 4;
+int enemy_count = 10;
+int render_count = 11;
+extern const int original_render_count = 11;
 
 bool jump = false;
 
@@ -71,6 +71,8 @@ extern float blured;
 extern float blur_dismantle_speed;
 extern float blur_limit;
 
+int mode = 0; //0 normal mode. 1 skybox mode.
+bool particleDemo = false;
 
 Drawer::Drawer(){
 }
@@ -106,7 +108,7 @@ void Drawer::drawerinit() {
 	//init spheres
 	Sphere::ID_count = 0;
 
-	player = new Sphere(vec3(-0.6, 20, -0.6), 1, 40, 40);
+	player = new Sphere(vec3(-0.6, 30, -0.6), 1, 40, 40);
 	renderObjects.push_back(player);
 	render_spheres.push_back(player);
 	forUp(i, enemy_count) {
@@ -276,7 +278,8 @@ void Drawer::draw() {
 	//shadowmap->changeBack();
 
 	if(useFrameBuffer) fbo->useFrameBuffer(clearColor);
-	forUp(i, renderObjects.size()) renderObjects[i]->draw();
+	if(mode == 0) forUp(i, renderObjects.size()) renderObjects[i]->draw();
+	else if(mode == 1) renderObjects[0]->draw();
 	if (useFrameBuffer) fbo->changeBackToDefaultBufferAndDraw(clearColor);
 }
 
