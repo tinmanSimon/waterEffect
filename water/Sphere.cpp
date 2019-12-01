@@ -300,3 +300,11 @@ void Sphere::hit_water() {
 bool Sphere::has_hit_water() {
 	return hit_the_water;
 }
+
+bool Sphere::get_runAI() {
+	return run_AI;
+}
+
+void Sphere::set_runAI(bool b) {
+	run_AI = b;
+}

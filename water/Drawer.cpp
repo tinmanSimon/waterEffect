@@ -18,7 +18,9 @@ Sphere* player;
 GLASSGROUND* glass;
 Particle* particle;
 
-int enemy_count = 1;
+int enemy_count = 3;
+int render_count = 4;
+extern const int original_render_count = 4;
 
 bool jump = false;
 
@@ -97,18 +99,18 @@ void Drawer::drawerinit() {
 	//init water
 	Water::geometry = false;
 	glass = new GLASSGROUND(4.0f, 40.0f);
-	renderObjects.push_back(new Water(500, 500, 0.4f));
-	renderObjects.push_back(new WATERGROUND(-2.0f));
+	renderObjects.push_back(new Water(200, 200, 0.5f));
+	//renderObjects.push_back(new WATERGROUND(-2.0f));
 	//renderObjects.push_back(new WATERGROUND(-200.0f));
 
 	//init spheres
 	Sphere::ID_count = 0;
 
-	player = new Sphere(vec3(-30.5, 20, -30.5), 1, 40, 40);
+	player = new Sphere(vec3(-0.6, 20, -0.6), 1, 40, 40);
 	renderObjects.push_back(player);
 	render_spheres.push_back(player);
 	forUp(i, enemy_count) {
-		Sphere* tmp = new Sphere(vec3(i * 6 - 30, i * 10 + 5, i * 6 - 30), 1, 40, 40);
+		Sphere* tmp = new Sphere(vec3(0, i * 2.2 + 5.0, 0), 1, 40, 40);
 		render_spheres.push_back(tmp);
 		renderObjects.push_back(tmp);
 	}
@@ -154,7 +156,7 @@ void updateSphere(Sphere* s) {
 void collisionDetect(Sphere* s, GLASSGROUND* g) {
 	bool itsStatic = sphereIsStatic(s, g);
 	if (jump == false && s->getID() == player->getID() && itsStatic) return;
-	else if(itsStatic && s->getID() != player->getID()) s->velocity += jump_velocity;
+	else if(s->get_runAI() && itsStatic && s->getID() != player->getID()) s->velocity += jump_velocity;
 	
 
 	float groundAltitude = g->getAltitude();
@@ -174,12 +176,9 @@ void collisionDetect(Sphere* s, GLASSGROUND* g) {
 		if (length(s->velocity) < 0.1f)s->velocity = vec3(0);
 
 		if (s->getID() == player->getID() && jump && dot(s->velocity, vec3(0, 1, 0)) > 0) s->velocity += jump_velocity;
-		else if (s->getID() != player->getID() && dot(s->velocity, vec3(0, 1, 0)) > 0) s->velocity += jump_velocity;
+		else if (s->get_runAI() && s->getID() != player->getID() && dot(s->velocity, vec3(0, 1, 0)) > 0) s->velocity += jump_velocity;
 		jump = false;
 	}
-
-	
-
 }
 
 void collisionDetect(Sphere* s1, Sphere* s2) {
@@ -199,7 +198,6 @@ void collisionDetect(Sphere* s1, Sphere* s2) {
 				blur_density = 100;
 			}
 		}
-
 
 		s1->sphere_translate(dist_vec * abs(dist));
 		float s1_velocity = dot(dist_vec, s1->velocity);
@@ -231,14 +229,14 @@ void logic() {
 		}
 
 		//fog
-		if (fogDistance < (cam->n + 60) || fogDistance >(5.0f * cam->f)) {
+		if (fogDistance < (cam->n + 60) || fogDistance >(2.0f * cam->f)) {
 			fogChange = -fogChange;
-			fogDistance = min(max(fogDistance, cam->n + 61), 5.0f * cam->f - 1);
+			fogDistance = min(max(fogDistance, cam->n + 61), 2.0f * cam->f - 1);
 		}
 		fogDistance += fogChange * delta_t;
 
 		//update spheres
-		forUp(i, render_spheres.size()) {
+		forUp(i, render_count) {
 			Sphere* s = render_spheres[i];
 			//Particle* particle = render_particles[0];
 			if (s->has_hit_water()) continue;
@@ -246,12 +244,13 @@ void logic() {
 			//otherwise, it doesn't hit water and we update its location.
 			updateSphere(s);
 			for (int j = 0; j < render_spheres.size() - 1; ++j) 
-				if(i != j) collisionDetect(render_spheres[i], render_spheres[j]);
+				if(i != j && (!render_spheres[j]->has_hit_water())) collisionDetect(render_spheres[i], render_spheres[j]);
 			
 			//if (i + 1 < render_spheres.size()) collisionDetect(render_spheres[i], render_spheres[i + 1]);
 			collisionDetect(render_spheres[i], glass);
 
-			if (s->getID() != player->getID()) {
+			//AI of enemies
+			if (s->get_runAI() && s->getID() != player->getID()) {
 				vec3 dist_vec = normalize(player->getWorldPos() - s->getWorldPos());
 				s->velocity += dist_vec * velocity_step * difficulty;
 				if (length(s->velocity) > max_velocity) s->velocity = max_velocity * normalize(s->velocity);

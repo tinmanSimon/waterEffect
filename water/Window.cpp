@@ -22,6 +22,8 @@ extern Particle* particle;
 extern float blured;
 extern float blur_density;
 extern bool enable_blur;
+extern int render_count;
+extern const int original_render_count;
 
 Window::Window(char* window_name, float _width, float _height)
 {
@@ -106,17 +108,35 @@ void processInput(GLFWwindow* window, int key, int scancode, int action, int mod
 	}
 
 	if (key == GLFW_KEY_1 && action == GLFW_PRESS) {
+		render_count = 2;
 		forUp(i, render_spheres.size()) {
 			render_spheres[i]->reset();
+			render_spheres[i]->set_runAI(false);
+		}
+		for (int i = render_count; i < render_spheres.size(); ++i) {
+			render_spheres[i]->hit_water();
+			render_spheres[i]->sphere_translate(glm::vec3(0, -1000, 0));
 		}
 		particle->reset_time();
+
+		time_speed = 1.0;
+		enable_blur = false;
+		blured = -1.0f;
+		slow_motion_enabled = true;
 	}
 
 	if (key == GLFW_KEY_2 && action == GLFW_PRESS) {
+		render_count = original_render_count;
 		forUp(i, render_spheres.size()) {
 			render_spheres[i]->reset(glm::vec3(i*2, 8, i*2));
+			render_spheres[i]->set_runAI(true);
 		}
 		particle->reset_time();
+
+		time_speed = 1.0;
+		enable_blur = true;
+		blured = -1.0f;
+		slow_motion_enabled = false;
 	}
 }
 

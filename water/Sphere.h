@@ -38,6 +38,7 @@ class Sphere : public RenderObject {
 	glm::vec3 initialPos;
 
 	bool hit_the_water = false;
+	bool run_AI = true;
 
 public:
 	static int ID_count;
@@ -82,6 +83,9 @@ public:
 
 	void hit_water();
 	bool has_hit_water();
+
+	bool get_runAI();
+	void set_runAI(bool b);
 };
 
 extern std::vector<Sphere*> spheres;
